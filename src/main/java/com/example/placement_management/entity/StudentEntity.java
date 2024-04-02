@@ -18,6 +18,19 @@ public class StudentEntity {
     private double cgpa;
     private int sem;
     private String resume_link;
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private JobEntity appliedJob;
+
+    // Constructor, getters, setters
+
+    public JobEntity getAppliedJob() {
+        return appliedJob;
+    }
+
+    public void setAppliedJob(JobEntity appliedJob) {
+        this.appliedJob = appliedJob;
+    }
 
     public int getId() {
         return id;
