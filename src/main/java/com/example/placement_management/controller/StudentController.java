@@ -35,7 +35,7 @@ public class StudentController {
         System.out.println(s);
         repo.save(s);
 //        session.setAttribute("message","Student Application Submitted!...")
-        return "redirect:/save_jobs";
+        return "redirect:/student_jobs";
     }
 
     @GetMapping("/applyJob/{jobId}")
