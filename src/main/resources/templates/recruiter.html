@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recruiter Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* Optional custom styles */
+        body {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #dddddd;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<h1 class="mb-4">Recruiter Dashboard</h1>
+
+<!-- CGPA Filter Form -->
+<form action="/recruiter/filter" method="post" class="mb-4">
+    <div class="input-group">
+        <label for="cgpa" class="input-group-text">Filter by CGPA (>=)</label>
+        <input type="text" id="cgpa" name="cgpa" class="form-control" required>
+        <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+</form>
+
+<!-- Student Details Table -->
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>SRN</th>
+            <th>Gender</th>
+            <th>Branch</th>
+            <th>Email</th>
+            <th>CGPA</th>
+            <th>Sem</th>
+            <th>Resume Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${students}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.srn}"></td>
+            <td th:text="${student.gender}"></td>
+            <td th:text="${student.branch}"></td>
+            <td th:text="${student.email}"></td>
+            <td th:text="${student.cgpa}"></td>
+            <td th:text="${student.sem}"></td>
+            <td th:text="${student.resume_link}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS (optional if you have functionality requiring it) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -20,7 +20,6 @@ public class StudentController {
 
     @PostMapping("/application")
     public String apply(@ModelAttribute StudentEntity s) {
-
         System.out.println(s);
         repo.save(s);
 //        session.setAttribute("message","Student Application Submitted!...")
