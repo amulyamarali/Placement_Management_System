@@ -1,13 +1,17 @@
 package com.example.placement_management.controller;
 
 import com.example.placement_management.entity.JobEntity;
+import com.example.placement_management.entity.RecruiterEntity;
+import com.example.placement_management.entity.StudentDetails;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.StudentRepository;
+import com.example.placement_management.repository.StudentDetailsRepository;
 import com.example.placement_management.service.JobService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
 
 import java.util.List;
 
@@ -47,11 +51,30 @@ public class StudentController {
         return "redirect:/student_jobs";
     }
 
+    @Autowired
+    private StudentDetailsRepository r;
+
+    @PostMapping("/student/signup")
+    public String apply(@ModelAttribute StudentDetails student) {
+        // Save the student to the database
+        r.save(student);
+
+        // Redirect to the student jobs page
+        return "redirect:/student_jobs";
+    }
+
+
     @GetMapping("/applyJob/{jobId}")
     public String showApplyJobForm(@PathVariable("jobId") Long jobId, Model model) {
         JobEntity job = jobService.getById(jobId);
         model.addAttribute("job", job);
         model.addAttribute("student", new StudentEntity());
         return "student/applyJob"; // Return the name of your application HTML page
+    }
+
+    @GetMapping("/student/signup")
+    public String showSignupForm(Model model) {
+        model.addAttribute("recruiter", new RecruiterEntity());
+        return "student/signup_student";
     }
 }

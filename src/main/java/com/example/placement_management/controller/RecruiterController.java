@@ -43,12 +43,9 @@ public class RecruiterController {
     private RecruiterRepository RecruiterRepository;
 
     @GetMapping("/recruiter/signup")
-    public String registerRecruiter(RecruiterEntity recruiterEntity) {
-        if (recruiterEntity.getPassword() == null) {
-            throw new IllegalArgumentException("Password cannot be null");
-        }
-        RecruiterRepository.save(recruiterEntity);
-        return "redirect:/recruiter/login";
+    public String showSignupForm(Model model) {
+        model.addAttribute("recruiter", new RecruiterEntity());
+        return "recruiter/signup_recruiter";
     }
 
 }

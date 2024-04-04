@@ -1,6 +1,7 @@
 package com.example.placement_management.controller;
 
 import com.example.placement_management.entity.JobEntity;
+import com.example.placement_management.entity.RecruiterEntity;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class AdminController {
         JobEntity job = jobService.getById(jobId);
         model.addAttribute("job", job);
         return "admin/editJobs";
+    }
+
+    @GetMapping("/admin/signup")
+    public String showSignupForm(Model model) {
+        model.addAttribute("recruiter", new RecruiterEntity());
+        return "admin/signup_admin";
     }
 
 

@@ -2,15 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Log in with your account</title>
+    <title>SIGNUP PAGE</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="/css/main.css" rel="stylesheet">
 </head>
 
 <body>
 <div class="container">
-    <form class="form-signin" method="post" th:action="@{/student_jobs}">
-        <h2 class="form-heading">Log in</h2>
+    <form class="form-signin" method="post" th:action="@{/student/signup}">
+        <h2 class="form-heading">Sign Up</h2>
 
         <div class="form-group">
             <span th:text="${message}"></span>
@@ -23,8 +23,7 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <br/>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="/student/signup">Create an account</a></h4>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Signup</button>
         </div>
     </form>
 </div>
