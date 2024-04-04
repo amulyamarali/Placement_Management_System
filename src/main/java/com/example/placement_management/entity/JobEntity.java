@@ -1,5 +1,6 @@
 package com.example.placement_management.entity;
 
+
 import jakarta.persistence.*;
 
 import java.util.List;

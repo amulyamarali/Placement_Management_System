@@ -17,15 +17,16 @@
             <input type="text" class="form-control" id="title" name="title" th:field="*{job_role}">
         </div>
         <div class="form-group">
-            <label for="salary">Title:</label>
-            <input type="text" class="form-control" id="salary" name="salary" th:field="*{salary}">
+            <label for="salary">Salary:</label>
+            <input type="number" class="form-control" id="salary" name="salary" th:field="*{salary}">
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
             <textarea class="form-control" id="description" name="description" rows="4" th:field="*{description}"></textarea>
         </div>
         <!-- Add other job details fields as needed -->
-        <a class="btn btn-primary" th:href="@{'/showJobs'}">Save Changes</a>
+        <!-- <a class="btn btn-primary" th:href="@{'/showJobs'}">Save Changes</a> -->
+        <button type="submit" class="btn btn-primary">Save Changes</button>
     </form>
 </div>
 <!-- Include any necessary JavaScript -->

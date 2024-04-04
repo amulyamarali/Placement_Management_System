@@ -20,20 +20,30 @@ public class StudentController {
     @Autowired
     private JobService jobService;
 
+    @GetMapping("/")
+    public String landing() {
+        return "landing";
+    }
+
     @RequestMapping("/student_login")
-    public String login() { return "login";}
+    public String login() {
+        return "student/login_student";
+    }
 
     @RequestMapping("/student_jobs")
     public String displayJobLists(Model model) {
-        List<JobEntity> listJobs= jobService.listAll();
+        List<JobEntity> listJobs = jobService.listAll();
         model.addAttribute("listJobs", listJobs);
-        return "studentJobs";
+        return "student/studentJobs";
     }
-    @PostMapping("/application")
-    public String apply(@ModelAttribute StudentEntity s) {
+
+    @PostMapping("/application/{jobId}")
+    public String apply(@PathVariable("jobId") Long jobId, @ModelAttribute StudentEntity s) {
+        JobEntity job = jobService.getById(jobId); // Retrieve the job
+        s.setAppliedJob(job); // Set the job
         System.out.println(s);
         repo.save(s);
-//        session.setAttribute("message","Student Application Submitted!...")
+        // session.setAttribute("message","Student Application Submitted!...")
         return "redirect:/student_jobs";
     }
 
@@ -42,6 +52,6 @@ public class StudentController {
         JobEntity job = jobService.getById(jobId);
         model.addAttribute("job", job);
         model.addAttribute("student", new StudentEntity());
-        return "applyJob"; // Return the name of your application HTML page
+        return "student/applyJob"; // Return the name of your application HTML page
     }
 }

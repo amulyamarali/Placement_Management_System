@@ -9,7 +9,7 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
     private String srn;
     private String gender;
@@ -116,6 +116,7 @@ public class StudentEntity {
                 ", cgpa=" + cgpa +
                 ", sem=" + sem +
                 ", resume_link='" + resume_link + '\'' +
+                ", job_id=" + (appliedJob != null ? appliedJob.getId() : "null") +
                 '}';
     }
 }

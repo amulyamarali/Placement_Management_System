@@ -17,13 +17,14 @@ public class AdminController {
 //    public JobRepository repo;
     @Autowired
     private JobService jobService;
-    @GetMapping("/login")
+
+    @GetMapping("/admin_login")
     public String login() {
-        return "login";
+        return "admin/login_admin";
     }
     @RequestMapping("/upload")
     public String uploadJobs(){
-        return "uploadJobs";
+        return "admin/uploadJobs";
     }
 //    @RequestMapping("/save_jobs")
 //    public String saveJobs(@ModelAttribute JobEntity j, Model model) {
@@ -38,13 +39,13 @@ public class AdminController {
         jobService.uploadJob(j);
         List<JobEntity> listJobs= jobService.listAll();
         model.addAttribute("listJobs", listJobs);
-        return "adminJobs";
+        return "admin/adminJobs";
     }
     @GetMapping("/editJobs/{jobId}")
     public String editJob(@PathVariable("jobId") Long jobId, Model model) {
         JobEntity job = jobService.getById(jobId);
         model.addAttribute("job", job);
-        return "editJobs";
+        return "admin/editJobs";
     }
 
 

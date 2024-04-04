@@ -11,6 +11,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.placement_management.entity.JobEntity;
+import com.example.placement_management.repository.JobRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import java.util.List;
 
 @Controller
@@ -48,6 +56,21 @@ public class JobController {
     public String uploadJob(@ModelAttribute("job") JobEntity job) {
         jobService.uploadJob(job);
         return "redirect:/";
+    }
+
+    @Autowired
+    private JobRepository jobRepository;
+
+    @PostMapping("/editJob/{jobId}")
+    public String editJob(@ModelAttribute JobEntity jobEntity, @PathVariable Long jobId) {
+        JobEntity existingJob = jobRepository.findById(jobId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid job Id:" + jobId));
+        existingJob.setJob_role(jobEntity.getJob_role());
+        existingJob.setSalary(jobEntity.getSalary());
+        existingJob.setDescription(jobEntity.getDescription());
+        // Update other fields as needed
+        jobRepository.save(existingJob);
+        return "redirect:/showJobs";
     }
 
 }
