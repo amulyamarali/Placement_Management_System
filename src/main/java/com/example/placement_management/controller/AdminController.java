@@ -2,8 +2,11 @@ package com.example.placement_management.controller;
 
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentEntity;
+import com.example.placement_management.repository.JobRepository;
+import com.example.placement_management.repository.StudentRepository;
 import com.example.placement_management.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,39 +16,41 @@ import java.util.List;
 @Controller
 public class AdminController {
 
-//    @Autowired
+    //    @Autowired
 //    public JobRepository repo;
     @Autowired
     private JobService jobService;
+    @Autowired
+    private JobRepository repo;
+
     @GetMapping("/login")
     public String login() {
         return "login";
     }
-    @RequestMapping("/upload")
-    public String uploadJobs(){
+
+    @GetMapping("/upload")
+    public String uploadJobs(Model model) {
+        model.addAttribute("jobEntity", new JobEntity());
         return "uploadJobs";
     }
-//    @RequestMapping("/save_jobs")
-//    public String saveJobs(@ModelAttribute JobEntity j, Model model) {
-//        jobService.uploadJob(j);
-//        List<JobEntity> listJobs= jobService.listAll();
-//        model.addAttribute("listJobs", listJobs);
-//        return "adminJobs";
-//    }
 
-    @RequestMapping("showJobs")
-    public String displayJobs(Model model, @ModelAttribute JobEntity j) {
-        jobService.uploadJob(j);
-        List<JobEntity> listJobs= jobService.listAll();
-        model.addAttribute("listJobs", listJobs);
+    @GetMapping("/admin_home")
+    public String displayJobs(Model model) {
+        List<JobEntity> jobs = jobService.listAll();
+        model.addAttribute("jobs", jobs);
         return "adminJobs";
     }
-    @GetMapping("/editJobs/{jobId}")
-    public String editJob(@PathVariable("jobId") Long jobId, Model model) {
-        JobEntity job = jobService.getById(jobId);
-        model.addAttribute("job", job);
-        return "editJobs";
+
+    @PostMapping("/upload")
+    public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
+        repo.save(jobEntity);
+        return "redirect:/upload"; // Redirect to the upload form again or any other appropriate page
     }
 
+    @PostMapping("/admin_home/delete/{id}")
+    public String deleteJobs(@PathVariable("id") Long id) {
+        jobService.delete(id);
+        return "redirect:/admin_home";
+    }
 
 }

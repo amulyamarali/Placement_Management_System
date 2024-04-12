@@ -11,7 +11,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
     <div class="container">
-        <a class="navbar-brand" href="/">Job List</a>
+        <a class="navbar-brand">Job List</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -48,37 +48,33 @@
                     <td th:text="${#numbers.formatDecimal(job.salary, 0, 'COMMA', 2, 'POINT')}">Salary</td>
                     <td th:text="${job.description}">Description</td>
                     <td>
-                        <a class="btn btn-primary" th:href="@{'/applyJob/'+ ${job.id}}">Apply</a>
+                        <a class="btn btn-primary" th:href="@{'/applyJob/'+ ${job.id} }">Apply</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
-
-<!--            <nav aria-label="Page navigation" class="paging">-->
-<!--                <ul class="pagination" th:if="${employees.page.totalPages > 1}">-->
-<!--                    <li class="page-item" th:classappend="${!employees.paging.isPrevEnabled()? 'disabled' : ''}">-->
-<!--                        <a class="page-link" th:href="@{'/?pageNumber=' + ${employees.paging.pageNumber - 1}}"-->
-<!--                           tabindex="-1">Previous</a>-->
-<!--                    </li>-->
-<!--                    <th:block th:each="item : ${employees.paging.getItems()}">-->
-<!--                        <li class="page-item" th:classappend="${item.index == employees.paging.pageNumber? 'active' : ''}"-->
-<!--                            th:if="${item.pageItemType.name() == 'PAGE'}">-->
-<!--                            <a class="page-link" th:href="@{'/?pageNumber=' + ${item.index}}"-->
-<!--                               th:text="${item.index}"></a>-->
-<!--                        </li>-->
-<!--                        <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">-->
-<!--                            <a class="page-link" href="#">...</a>-->
-<!--                        </li>-->
-<!--                    </th:block>-->
-<!--                    <li class="page-item" th:classappend="${!employees.paging.isNextEnabled()? 'disabled' : ''}">-->
-<!--                        <a class="page-link" th:href="@{'/?pageNumber=' + ${employees.paging.pageNumber + 1}}">Next</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
         </div>
     </div>
 </div>
-
+<div class="container">
+    <h2>Applied Jobs</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Company</th>
+            <th>Title</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="job : ${appliedJobs}">
+            <td th:text="${job.company}">Company</td>
+            <td th:text="${job.job_role}">Title</td>
+            <td th:text="${job.description}">Description</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>

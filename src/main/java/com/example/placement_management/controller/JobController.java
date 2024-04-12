@@ -21,20 +21,20 @@ public class JobController {
         return jobService.listAll();
     }
 
-//    @PostMapping("/save_jobs")
+    //    @PostMapping("/save_jobs")
 //    public String viewHomePage(Model model) {
 //        List<JobEntity> listJobs= jobService.listAll();
 //        model.addAttribute("listProducts", listJobs);
 //        return "jobs";
 //    }
-//    @PostMapping("/save_jobs")
-//    public String saveJobs(@ModelAttribute JobEntity j, Model model) {
-//        jobService.uploadJob(j);
-//        List<JobEntity> listJobs= jobService.listAll();
-//        model.addAttribute("listJobs", listJobs);
-//        return "jobs";
-//    }
-//    @PostMapping("/student_jobs")
+    @PostMapping("/save_jobs")
+    public String saveJobs(@ModelAttribute JobEntity j, Model model) {
+        jobService.uploadJob(j);
+        List<JobEntity> listJobs= jobService.listAll();
+        model.addAttribute("listJobs", listJobs);
+        return "jobs";
+    }
+    //    @PostMapping("/student_jobs")
 //    public String displayJobLists() {
 //        return "studentJobs";
 //    }

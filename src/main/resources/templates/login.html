@@ -2,31 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Log in with your account</title>
+    <title>Log In</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="/css/main.css" rel="stylesheet">
+    <style>
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Set the height of the container to the viewport height */
+        }
+
+        .form-container {
+            width: 400px;
+            padding: 20px;
+            background-color: #f8f9fa; /* Light gray background color */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+        }
+
+        .create-account {
+            margin-top: 10px; /* Add margin to create space */
+            font-size: 7px; /* Set smaller font size */
+        }
+    </style>
 </head>
 
 <body>
 <div class="container">
-    <form class="form-signin" method="post" th:action="@{/student_jobs}">
-        <h2 class="form-heading">Log in</h2>
+    <div class="form-container">
+        <form class="form-signin" method="post" th:action="@{/studentJobs}">
 
-        <div class="form-group">
-            <span th:text="${message}"></span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
-                   autofocus="true"/>
-            <br/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <span class="has-error" th:text="${error}"></span>
 
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <br/>
+            <div class="form-group">
+                <span th:text="${message}"></span>
+                <input name="username" type="text" class="form-control" placeholder="Username"
+                       autofocus="true"/>
+                <br/>
+                <input name="password" type="password" class="form-control" placeholder="Password"/>
+                <span class="has-error" th:text="${error}"></span>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
-            <h4 class="text-center"><a href="/registration">Create an account</a></h4>
-        </div>
-    </form>
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <br/>
+
+                <button class="btn btn-lg btn-primary btn-block" type="submit" style="font-size: 18px;">Log In</button>
+            </div>
+        </form>
+        <h4 class="text-center"><a href="/registration" style="font-size: 14px;">Create an account</a></h4>
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -35,5 +59,3 @@
 <script src="/js/main.js"></script>
 </body>
 </html>
-
-
