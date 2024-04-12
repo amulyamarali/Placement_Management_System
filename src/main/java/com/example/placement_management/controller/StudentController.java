@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import java.util.List;
 
 @Controller
@@ -29,9 +28,30 @@ public class StudentController {
         return "landing";
     }
 
+    @Autowired
+    private StudentDetailsRepository studentDetailsRepository;
+
     @RequestMapping("/student_login")
     public String login() {
         return "student/login_student";
+    }
+
+    @PostMapping("/student_login")
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password,
+            Model model) {
+        // Find the student by username
+        StudentDetails student = studentDetailsRepository.findByUsername(username);
+
+        if (student != null && password.equals(student.getPassword())) {
+            // If the student exists and the password is correct, redirect to the student
+            // jobs page
+            return "redirect:/student_jobs";
+        } else {
+            // If the student doesn't exist or the password is incorrect, show an error
+            // message
+            model.addAttribute("loginError", "Invalid username or password.");
+            return "student/login_student";
+        }
     }
 
     @RequestMapping("/student_jobs")
@@ -62,7 +82,6 @@ public class StudentController {
         // Redirect to the student jobs page
         return "redirect:/student_jobs";
     }
-
 
     @GetMapping("/applyJob/{jobId}")
     public String showApplyJobForm(@PathVariable("jobId") Long jobId, Model model) {
