@@ -45,6 +45,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>SRN</th>
+            <th>Phone Number</th>
             <th>Gender</th>
             <th>Branch</th>
             <th>Email</th>
@@ -54,10 +55,11 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="student : ${students}">
+        <tr th:each="student : ${applicants}">
             <td th:text="${student.id}"></td>
             <td th:text="${student.name}"></td>
             <td th:text="${student.srn}"></td>
+            <td th:text="${student.phoneNo}"></td>
             <td th:text="${student.gender}"></td>
             <td th:text="${student.branch}"></td>
             <td th:text="${student.email}"></td>

@@ -2,8 +2,6 @@ package com.example.placement_management.entity;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "student_details")
 public class StudentEntity {
@@ -11,7 +9,7 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
     private String srn;
     private String gender;
@@ -20,11 +18,26 @@ public class StudentEntity {
     private double cgpa;
     private int sem;
     private String resume_link;
-    @ManyToMany
-    @JoinTable(name = "student_job",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id"))
-    private List<JobEntity> appliedJobs;
+    private Long phoneNo;
+    @ManyToOne
+    @JoinColumn(name = "job_id")
+    private JobEntity appliedJob;
+
+    @ManyToOne
+    @JoinColumn(name = "job_id", insertable = false, updatable = false)
+    private JobEntity shortlistedJobs;
+
+    // Constructor, getters, setters
+
+    public JobEntity getAppliedJob() {
+        return appliedJob;
+    }
+
+    public JobEntity getShortlistedJob() { return shortlistedJobs; }
+
+    public void setAppliedJob(JobEntity appliedJob) {
+        this.appliedJob = appliedJob;
+    }
 
     public int getId() {
         return id;
@@ -98,6 +111,10 @@ public class StudentEntity {
         this.resume_link = resume_link;
     }
 
+    public void setPhoneNo(Long phoneNo) { this.phoneNo = phoneNo; }
+
+    public Long getPhoneNo() { return phoneNo; }
+
     @Override
     public String toString() {
         return "StudentEntity{" +
@@ -110,13 +127,8 @@ public class StudentEntity {
                 ", cgpa=" + cgpa +
                 ", sem=" + sem +
                 ", resume_link='" + resume_link + '\'' +
+                ", job_id=" + (appliedJob != null ? appliedJob.getId() : "null") +
+                ", phone_no=" + phoneNo +
                 '}';
-    }
-
-    public void setAppliedJobs(List<JobEntity> appliedJob) {
-        this.appliedJobs = appliedJob;
-    }
-    public List<JobEntity> getAppliedJobs() {
-        return appliedJobs;
     }
 }

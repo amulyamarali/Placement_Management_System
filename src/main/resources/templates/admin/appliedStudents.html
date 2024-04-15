@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job</title>
+    <!-- Include any necessary CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <br/> <h2>Applied Students:</h2> <br/>
+    <table id="example" class="table table-bordered" style="width: 100%">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>SRN</th>
+            <th>Phone Number</th>
+            <th>Gender</th>
+            <th>Branch</th>
+            <th>Email</th>
+            <th>CGPA</th>
+            <th>Sem</th>
+            <th>Resume Link</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student : ${appliedStudents}">
+            <td th:text="${student.id}"></td>
+            <td th:text="${student.name}"></td>
+            <td th:text="${student.srn}"></td>
+            <td th:text="${student.phoneNo}"></td>
+            <td th:text="${student.gender}"></td>
+            <td th:text="${student.branch}"></td>
+            <td th:text="${student.email}"></td>
+            <td th:text="${student.cgpa}"></td>
+            <td th:text="${student.sem}"></td>
+            <td th:text="${student.resume_link}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- Include any necessary JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.example.placement_management.service;
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.JobRepository;
+import com.example.placement_management.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private StudentRepository studentRepository;
 
     public List<JobEntity>  listAll() {
         return jobRepository.findAll();
@@ -61,5 +65,23 @@ public class JobService {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public List<StudentEntity> getShortlistForJob(Long jobId) {
+        List<StudentEntity> studentList = studentRepository.findShortlistById(jobId);
+        if (!studentList.isEmpty()) {
+            return studentList;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+    public List<StudentEntity> getApplicantsByJobIdAndRecruiterId(Long jobId) {
+        // Retrieve the job entity by its ID and recruiter ID
+        List<JobEntity> jobs = jobRepository.findByRecruiterIdAndId(jobId);
+        if (!jobs.isEmpty()) {
+            // Return the list of applicants for the retrieved job entity
+            return jobs.get(0).getApplicants();
+        }
+        return null;
     }
 }
