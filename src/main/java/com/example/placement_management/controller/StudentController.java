@@ -61,15 +61,15 @@ public class StudentController {
         return "student/studentJobs";
     }
 
-    @PostMapping("/application/{jobId}")
-    public String apply(@PathVariable("jobId") Long jobId, @ModelAttribute StudentEntity s) {
-        JobEntity job = jobService.getById(jobId); // Retrieve the job
-        s.setAppliedJob(job); // Set the job
-        System.out.println(s);
-        repo.save(s);
-        // session.setAttribute("message","Student Application Submitted!...")
-        return "redirect:/student_jobs";
-    }
+//    @PostMapping("/application/{jobId}")
+//    public String apply(@PathVariable("jobId") Long jobId, @ModelAttribute StudentEntity s) {
+//        JobEntity job = jobService.getById(jobId); // Retrieve the job
+//        s.setAppliedJob(job); // Set the job
+//        System.out.println(s);
+//        repo.save(s);
+//        // session.setAttribute("message","Student Application Submitted!...")
+//        return "redirect:/student_jobs";
+//    }
 
     @Autowired
     private StudentDetailsRepository r;

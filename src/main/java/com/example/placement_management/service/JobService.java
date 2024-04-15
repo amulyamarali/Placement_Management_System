@@ -1,5 +1,5 @@
 package com.example.placement_management.service;
-
+import org.springframework.data.domain.Sort;
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.JobRepository;
@@ -30,6 +30,11 @@ public class JobService {
 
     public void delete(long id) {
         jobRepository.deleteById(id);
+    }
+
+    public List<JobEntity> listAll(String sortBy) {
+        Sort sort = Sort.by(sortBy).ascending();
+        return jobRepository.findAll(sort);
     }
 
     public void applyForJob(Long jobId, StudentEntity student) {

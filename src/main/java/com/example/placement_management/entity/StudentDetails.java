@@ -15,12 +15,17 @@ public class StudentDetails {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email_id")
+    private String email_id;
+
     public StudentDetails() {
     }
 
-    public StudentDetails(String username, String password) {
+
+    public StudentDetails(String username, String password, String email_id) {
         this.username = username;
         this.password = password;
+        this.email_id = email_id;
     }
 
     public int getId() {
@@ -45,5 +50,13 @@ public class StudentDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmail_id() {
+        return email_id;
+    }
+
+    public void setEmail_id(String email_id) {
+        this.email_id = email_id;
     }
 }

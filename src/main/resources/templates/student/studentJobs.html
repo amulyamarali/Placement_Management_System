@@ -6,12 +6,35 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <title>Jobs</title>
+    <title>Job List</title>
+
+    <style>
+        .btn-student-list {
+            background-color: white;
+            transition: color 0.3s;
+        }
+
+        .btn-student-list:hover {
+            animation: blink 0.5s infinite;
+        }
+
+        @keyframes blink {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary static-top">
     <div class="container">
-        <a class="navbar-brand" href="#">Job List</a>
+        <a class="navbar-brand" style="color: white">Job List</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -19,75 +42,49 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
+                <li class="nav-item">
+                    <a class="btn btn-light my-2 my-sm-0 mr-2" href="/" role="button">Home</a>
+                    <a class="btn btn-light my-2 my-sm-0" href="#" role="button">Profile</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
-        <div class="col-lg-10 mt-5 mb-5">
-            <table id="example" class="table table-bordered" style="width: 100%">
-                <thead>
+        <div class="col-lg-12">
+            <table id="example" class="table table-bordered table-hover" style="background-color: white;">
+                <thead class="thead-dark">
                 <tr>
                     <th>Company</th>
                     <th>Job Role</th>
                     <th>Salary</th>
                     <th>Description</th>
+                    <th>Deadline</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="job : ${listJobs}">
+                <tr th:each="job, iterStat : ${listJobs}" th:if="${iterStat.index} > 0">
                     <td th:text="${job.company}">Company</td>
                     <td th:text="${job.job_role}">Role</td>
                     <td th:text="${#numbers.formatDecimal(job.salary, 0, 'COMMA', 2, 'POINT')}">Salary</td>
-                    <td th:text="${job.description}">Description</td>
+                    <td th:text="${job.description}" style="width:350px">Description</td>
+                    <td th:text="${job.deadline}" style="width:120px">Deadline</td>
                     <td>
-                        <a class="btn btn-primary" th:href="@{'/applyJob/'+ ${job.id}}">Apply</a>
+                        <a class="btn btn-success" th:href="@{'/applyJob/'+ ${job.id}}" style="width:80px">Apply</a>
                     </td>
                 </tr>
                 </tbody>
             </table>
-
-<!--            <nav aria-label="Page navigation" class="paging">-->
-<!--                <ul class="pagination" th:if="${employees.page.totalPages > 1}">-->
-<!--                    <li class="page-item" th:classappend="${!employees.paging.isPrevEnabled()? 'disabled' : ''}">-->
-<!--                        <a class="page-link" th:href="@{'/?pageNumber=' + ${employees.paging.pageNumber - 1}}"-->
-<!--                           tabindex="-1">Previous</a>-->
-<!--                    </li>-->
-<!--                    <th:block th:each="item : ${employees.paging.getItems()}">-->
-<!--                        <li class="page-item" th:classappend="${item.index == employees.paging.pageNumber? 'active' : ''}"-->
-<!--                            th:if="${item.pageItemType.name() == 'PAGE'}">-->
-<!--                            <a class="page-link" th:href="@{'/?pageNumber=' + ${item.index}}"-->
-<!--                               th:text="${item.index}"></a>-->
-<!--                        </li>-->
-<!--                        <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">-->
-<!--                            <a class="page-link" href="#">...</a>-->
-<!--                        </li>-->
-<!--                    </th:block>-->
-<!--                    <li class="page-item" th:classappend="${!employees.paging.isNextEnabled()? 'disabled' : ''}">-->
-<!--                        <a class="page-link" th:href="@{'/?pageNumber=' + ${employees.paging.pageNumber + 1}}">Next</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </nav>-->
         </div>
     </div>
 </div>
 
-
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-
-<script>
-
-
-</script>
 
 </body>
 </html>

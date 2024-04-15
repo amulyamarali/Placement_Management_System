@@ -42,7 +42,7 @@
 <!--            <p th:text="${session.message}"></p>-->
 <!--            <th:block th:text="${session.removeAttribute('message')}"></th:block>-->
 <!--          </div>-->
-          <form th:action="@{/application/{jobId}(jobId=${job.id})}" th:object="${student}" method="post">
+          <form th:href="@{'/applyJob/'+ ${job.id}}" th:object="${student}" method="post">
             <div class="form-group">
               <label for="exampleInputEmail1"><b>Name</b></label>
               <input type="text" class="form-control" id="exampleInputEmail1" name="name" aria-describedby="emailHelp" required>

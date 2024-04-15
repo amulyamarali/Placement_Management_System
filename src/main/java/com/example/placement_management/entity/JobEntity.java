@@ -1,6 +1,5 @@
 package com.example.placement_management.entity;
 
-
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,8 +14,12 @@ public class JobEntity {
     public String job_role;
     public String description;
     public long salary;
+    public int job_id;
+    public String recruiter_id;
+    public String deadline;
+    public String recruiter_credentials;
 
-    @OneToMany(mappedBy = "appliedJob")
+    @ManyToMany(mappedBy = "appliedJobs")
     private List<StudentEntity> applicants;
 
     public void setId(long id) {
@@ -27,6 +30,14 @@ public class JobEntity {
     }
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public int getJob_id() {
+        return job_id;
+    }
+
+    public void setJob_id(int job_id) {
+        this.job_id = job_id;
     }
 
     public String getCompany() {
@@ -56,15 +67,41 @@ public class JobEntity {
     public String getDescription() {
         return description;
     }
+    public void setRecruiter_id(String recruiter_id){
+        this.recruiter_id = recruiter_id;
+    }
+
+    public String getRecruiter_id() {
+        return recruiter_id;
+    }
+
+    public String getRecruiter_credentials() {
+        return recruiter_credentials;
+    }
+
+    public void setRecruiter_credentials(String recruiter_credentials) {
+        this.recruiter_credentials = recruiter_credentials;
+    }
+
+    public void setDeadline(String deadline){
+        this.deadline = deadline;
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
 
     public JobEntity() {
     }
-    public JobEntity(Long id, String company, String job_role, Long salary, String description) {
+    public JobEntity(Long id, String company, String job_role, Long salary, String description,String recruiter_id,String recruiter_credentials,String deadline) {
         this.id = id;
         this.salary = salary;
         this.company = company;
         this.job_role = job_role;
         this.description = description;
+        this.recruiter_id = recruiter_id;
+        this.recruiter_credentials = recruiter_credentials;
+        this.deadline = deadline;
     }
     @Override
     public String toString() {
@@ -74,6 +111,10 @@ public class JobEntity {
                 ", job_role='" + job_role + '\'' +
                 ", description='" + description + '\'' +
                 ", salary='" + salary + '\'' +
+                ", job_id='" + job_id + '\'' +
+                ", recruiter_id='" + recruiter_id + '\'' +
+                ", recruiter_credentials='" + recruiter_credentials + '\'' +
+                ", deadline='"+deadline+'\'' +
                 '}';
     }
 

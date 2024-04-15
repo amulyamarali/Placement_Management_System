@@ -2,28 +2,73 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>SIGNUP PAGE</title>
+    <title>Student Signup</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link href="/css/main.css" rel="stylesheet">
+    <style>
+        /* Custom styles */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Set the height of the container to the viewport height */
+        }
+
+        .form-signin {
+            width: 300px;
+            padding: 20px;
+            background-color: #f8f9fa; /* Light gray background color */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); /* Add a shadow effect */
+        }
+
+        .form-heading {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn-primary {
+            font-size: 14px;
+        }
+
+        .error-message {
+            color: red;
+        }
+        .form-heading {
+            font-size: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
+<nav class="navbar navbar-dark navbar-expand-lg" style="background-color: #007bff;">
+    <div class="container1">
+        <a class="navbar-brand" href="#">Placement Management System</a>
+    </div>
+</nav>
+
 <div class="container">
-    <form class="form-signin" method="post" th:action="@{/student/signup}">
+    <form class="form-signin" method="post" th:action="@{/student/signup}" id="signupForm">
         <h2 class="form-heading">Sign Up</h2>
 
         <div class="form-group">
             <span th:text="${message}"></span>
-            <input name="username" type="text" class="form-control" placeholder="Username"
-                   autofocus="true"/>
+            <input name="email" type="email" class="form-control" placeholder="Email ID" required/>
             <br/>
-            <input name="password" type="password" class="form-control" placeholder="Password"/>
-            <span class="has-error" th:text="${error}"></span>
+            <input name="username" type="text" class="form-control" placeholder="Username" autofocus="true" required/>
+            <br/>
+            <input name="password" id="password" type="password" class="form-control" placeholder="Password" required/>
+            <br/>
+            <input name="confirmPassword" id="confirmPassword" type="password" class="form-control" placeholder="Confirm Password" required/>
+            <br/>
+            <span id="passwordMatchError" class="error-message"></span>
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <br/>
 
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Signup</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" id="signupButton">Signup</button>
         </div>
     </form>
 </div>
@@ -32,7 +77,21 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 <script src="/js/main.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#signupButton').click(function (e) {
+            var password = $('#password').val();
+            var confirmPassword = $('#confirmPassword').val();
+
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                $('#passwordMatchError').text('Passwords do not match.');
+                return false;
+            } else {
+                $('#passwordMatchError').text('');
+            }
+        });
+    });
+</script>
 </body>
 </html>
-
-

@@ -2,6 +2,8 @@ package com.example.placement_management.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "student_details")
 public class StudentEntity {
@@ -9,7 +11,7 @@ public class StudentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name="name")
     private String name;
     private String srn;
     private String gender;
@@ -18,19 +20,11 @@ public class StudentEntity {
     private double cgpa;
     private int sem;
     private String resume_link;
-    @ManyToOne
-    @JoinColumn(name = "job_id")
-    private JobEntity appliedJob;
-
-    // Constructor, getters, setters
-
-    public JobEntity getAppliedJob() {
-        return appliedJob;
-    }
-
-    public void setAppliedJob(JobEntity appliedJob) {
-        this.appliedJob = appliedJob;
-    }
+    @ManyToMany
+    @JoinTable(name = "student_job",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_id"))
+    private List<JobEntity> appliedJobs;
 
     public int getId() {
         return id;
@@ -116,7 +110,13 @@ public class StudentEntity {
                 ", cgpa=" + cgpa +
                 ", sem=" + sem +
                 ", resume_link='" + resume_link + '\'' +
-                ", job_id=" + (appliedJob != null ? appliedJob.getId() : "null") +
                 '}';
+    }
+
+    public void setAppliedJobs(List<JobEntity> appliedJob) {
+        this.appliedJobs = appliedJob;
+    }
+    public List<JobEntity> getAppliedJobs() {
+        return appliedJobs;
     }
 }
