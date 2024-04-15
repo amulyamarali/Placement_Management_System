@@ -43,14 +43,14 @@
 
 <div class="container">
     <div class="form-container">
-        <form class="form-signin" method="post" th:action="@{/studentJobs}">
+        <form class="form-signin" method="post" th:action="@{/student_jobs}">
             <h2 class="form-heading">Student Log In</h2>
 
             <div class="form-group">
                 <span th:text="${message}"></span>
-                <input name="username" type="text" class="form-control" placeholder="Username" autofocus="true"/>
+                <input name="username" type="text" class="form-control" placeholder="username" autofocus="true"/>
                 <br/>
-                <input name="password" type="password" class="form-control" placeholder="Password"/>
+                <input name="password" type="password" class="form-control" placeholder="password"/>
                 <span class="has-error" th:text="${error}"></span>
 
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
