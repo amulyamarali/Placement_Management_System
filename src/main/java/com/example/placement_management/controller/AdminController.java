@@ -20,24 +20,44 @@ public class AdminController {
 //    public JobRepository repo;
     @Autowired
     private JobService jobService;
+
     @Autowired
     private JobRepository repo;
 
     @GetMapping("/admin_login")
-    public String login() {
+    public String showlogin() {
         return "admin/login_admin";
     }
+
+
     @RequestMapping("/admin/upload")
     public String uploadJobs(Model model){
+
+
         model.addAttribute("jobEntity", new JobEntity());
         return "admin/uploadJobs";
     }
 
-    @GetMapping("/admin_home")
+    @RequestMapping("/admin_home")
     public String displayJobs(Model model) {
         List<JobEntity> jobs = jobService.listAll("deadline"); // Sort by deadline by default
         model.addAttribute("jobs", jobs);
+        System.out.println(jobs);
         return "admin/adminJobs";
+    }
+
+    @GetMapping("/applicants/{jobId}")
+    public String appliedStudents(@PathVariable Long jobId, Model model) {
+        List<StudentEntity> applied = jobService.getApplicantsForJob(jobId);
+        model.addAttribute("applicants", applied);
+        return "admin/appliedStudents";
+    }
+
+    @GetMapping("showShortlist/{jobId}")
+    public String shortList(@PathVariable("jobId") Long JobId, Model model) {
+        List<StudentEntity> filtered = jobService.getShortlistForJob(JobId);
+        model.addAttribute("filteredStudents", filtered);
+        return "admin/shortlist";
     }
 
     private List<String> getSortOptions() {
@@ -48,7 +68,7 @@ public class AdminController {
     @PostMapping("/admin/upload")
     public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
         repo.save(jobEntity);
-        return "redirect:/admin/upload"; // Redirect to the upload form again or any other appropriate page
+        return "redirect:/admin_home";
     }
 
     @PostMapping("/admin_home/delete/{id}")

@@ -2,16 +2,14 @@ package com.example.placement_management.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "student_details")
+@Table(name = "students")
 public class StudentEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name="name")
     private String name;
     private String srn;
     private String gender;
@@ -19,6 +17,7 @@ public class StudentEntity {
     private String email;
     private double cgpa;
     private int sem;
+    private Long phone_no;
     private String resume_link;
     @ManyToMany
     @JoinTable(name = "student_job",
@@ -94,6 +93,14 @@ public class StudentEntity {
         return resume_link;
     }
 
+    public void setPhoneNo(Long phone_no) {
+        this.phone_no = phone_no;
+    }
+
+    public Long getPhoneNo() {
+        return phone_no;
+    }
+
     public void setResume_link(String resume_link) {
         this.resume_link = resume_link;
     }
@@ -113,8 +120,15 @@ public class StudentEntity {
                 '}';
     }
 
-    public void setAppliedJobs(List<JobEntity> appliedJob) {
-        this.appliedJobs = appliedJob;
+    public void setAppliedJobs(JobEntity appliedJob) {
+        if(this.appliedJobs == null) {
+            appliedJobs = new ArrayList<>();
+            appliedJobs.add(appliedJob);
+        }
+        else {
+            this.appliedJobs.add(appliedJob);
+        }
+
     }
     public List<JobEntity> getAppliedJobs() {
         return appliedJobs;

@@ -5,4 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 public interface StudentRepository extends JpaRepository<StudentEntity,Integer> {
     List<StudentEntity> findByCgpaGreaterThanEqual(double cgpa);
+    List<StudentEntity> findShortlistById(Long jobId);
+
+    StudentEntity getStudentById(Long studentId);
 }

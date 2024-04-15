@@ -7,6 +7,7 @@ import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.StudentRepository;
 import com.example.placement_management.repository.StudentDetailsRepository;
 import com.example.placement_management.service.JobService;
+import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,67 +31,66 @@ public class StudentController {
 
     @Autowired
     private StudentDetailsRepository studentDetailsRepository;
-
-    @RequestMapping("/student_login")
-    public String login() {
-        return "student/login_student";
-    }
-
-    @PostMapping("/student_login")
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password,
-            Model model) {
-        // Find the student by username
-        StudentDetails student = studentDetailsRepository.findByUsername(username);
-
-        if (student != null && password.equals(student.getPassword())) {
-            // If the student exists and the password is correct, redirect to the student
-            // jobs page
-            return "redirect:/student_jobs";
-        } else {
-            // If the student doesn't exist or the password is incorrect, show an error
-            // message
-            model.addAttribute("loginError", "Invalid username or password.");
-            return "student/login_student";
-        }
-    }
-
-    @RequestMapping("/student_jobs")
-    public String displayJobLists(Model model) {
-        List<JobEntity> listJobs = jobService.listAll();
-        model.addAttribute("listJobs", listJobs);
-        return "student/studentJobs";
-    }
-
-//    @PostMapping("/application/{jobId}")
-//    public String apply(@PathVariable("jobId") Long jobId, @ModelAttribute StudentEntity s) {
-//        JobEntity job = jobService.getById(jobId); // Retrieve the job
-//        s.setAppliedJob(job); // Set the job
-//        System.out.println(s);
-//        repo.save(s);
-//        // session.setAttribute("message","Student Application Submitted!...")
-//        return "redirect:/student_jobs";
-//    }
-
     @Autowired
     private StudentDetailsRepository r;
 
     @PostMapping("/student/signup")
     public String apply(@ModelAttribute StudentDetails student) {
-        // Save the student to the database
         r.save(student);
-
-        // Redirect to the student jobs page
-        return "redirect:/student_jobs";
+        int studentId = student.getId();
+        return "redirect:/student_jobs/"+studentId;
     }
 
-    @GetMapping("/applyJob/{jobId}")
-    public String showApplyJobForm(@PathVariable("jobId") Long jobId, Model model) {
+    @GetMapping("/student_login")
+    public String Showlogin() {
+        return "student/login_student";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password,
+            Model model) {
+        StudentDetails student = r.findByUsername(username);
+        System.out.println(student);
+        if (student == null) {
+            model.addAttribute("loginError", "Invalid username or password.");
+            return "student/login_student";
+        }
+        else if (password.equals(student.getPassword())) {
+            int studentId = student.getId();
+            model.addAttribute("studentId", studentId);
+            return "redirect:/student_jobs/"+studentId;
+        }
+        else {
+            model.addAttribute("loginError", "Invalid username or password.");
+            return "/student/login_student";
+        }
+    }
+
+    @RequestMapping("/student_jobs/{studentId}")
+    public String displayJobLists(Model model, @PathVariable int studentId) {
+        List<JobEntity> listJobs = jobService.listAll();
+        model.addAttribute("listJobs", listJobs);
+        model.addAttribute("studentId", studentId);
+        return "student/studentJobs";
+    }
+
+    @RequestMapping("/applyJob/{studentId}/{jobId}")
+    public String showApplyJobForm(@PathVariable("jobId") Long jobId, @PathVariable int studentId, @ModelAttribute StudentEntity student, Model model) {
         JobEntity job = jobService.getById(jobId);
+        jobService.applyForJob(jobId, student);
+        student.setId(studentId);
+        student.setAppliedJobs(job); // Set the job
+        repo.save(student);
         model.addAttribute("job", job);
-        model.addAttribute("student", new StudentEntity());
-        return "student/applyJob"; // Return the name of your application HTML page
+        model.addAttribute("student", student);
+        return "student/applyJob";
     }
 
+//    @PostMapping("/submit_application/{studentId}")
+//    public String submitApplication(@PathVariable("studentId") Long studentId, @ModelAttribute StudentEntity student) {
+//        repo.save(student);
+//        return "redirect:/application_submitted";
+//    }
     @GetMapping("/student/signup")
     public String showSignupForm(Model model) {
         model.addAttribute("recruiter", new RecruiterEntity());

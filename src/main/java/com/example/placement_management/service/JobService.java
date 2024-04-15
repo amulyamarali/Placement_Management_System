@@ -2,8 +2,9 @@ package com.example.placement_management.service;
 import org.springframework.data.domain.Sort;
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentEntity;
-import com.example.placement_management.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.placement_management.repository.JobRepository;
+import com.example.placement_management.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -15,6 +16,8 @@ public class JobService {
 
     @Autowired
     private JobRepository jobRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     public List<JobEntity>  listAll() {
         return jobRepository.findAll();
@@ -38,8 +41,6 @@ public class JobService {
     }
 
     public void applyForJob(Long jobId, StudentEntity student) {
-        // Add validation logic if necessary
-        // Fetch job by id, then add student to job's list of applicants
         JobEntity job = jobRepository.findById(jobId).orElse(null);
         if (job != null) {
             job.getApplicants().add(student);
@@ -63,6 +64,15 @@ public class JobService {
         if (optionalJob.isPresent()) {
             JobEntity job = optionalJob.get();
             return job.getApplicants();
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<StudentEntity> getShortlistForJob(Long jobId) {
+        List<StudentEntity> studentList = studentRepository.findShortlistById(jobId);
+        if (!studentList.isEmpty()) {
+            return studentList;
         } else {
             return Collections.emptyList();
         }

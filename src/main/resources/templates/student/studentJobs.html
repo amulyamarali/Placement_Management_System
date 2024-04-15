@@ -66,14 +66,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="job, iterStat : ${listJobs}" th:if="${iterStat.index} > 0">
+                <tr th:each="job, iterStat : ${listJobs}" >
                     <td th:text="${job.company}">Company</td>
                     <td th:text="${job.job_role}">Role</td>
                     <td th:text="${#numbers.formatDecimal(job.salary, 0, 'COMMA', 2, 'POINT')}">Salary</td>
                     <td th:text="${job.description}" style="width:350px">Description</td>
                     <td th:text="${job.deadline}" style="width:120px">Deadline</td>
                     <td>
-                        <a class="btn btn-success" th:href="@{'/applyJob/'+ ${job.id}}" style="width:80px">Apply</a>
+                        <a class="btn btn-success" th:href="@{'/applyJob/'+${studentId} +'/'+ ${job.id}}" style="width:80px">Apply</a>
                     </td>
                 </tr>
                 </tbody>

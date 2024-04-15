@@ -19,7 +19,7 @@ public class JobEntity {
     public String deadline;
     public String recruiter_credentials;
 
-    @ManyToMany(mappedBy = "appliedJobs")
+    @ManyToMany(mappedBy = "appliedJobs", cascade = CascadeType.ALL)
     private List<StudentEntity> applicants;
 
     public void setId(long id) {
@@ -30,10 +30,6 @@ public class JobEntity {
     }
     public void setCompany(String company) {
         this.company = company;
-    }
-
-    public int getJob_id() {
-        return job_id;
     }
 
     public void setJob_id(int job_id) {
@@ -119,7 +115,7 @@ public class JobEntity {
     }
 
     public List<StudentEntity> getApplicants() {
-        return applicants;
+        return this.applicants;
     }
 
     public void setApplicants(List<StudentEntity> applicants) {
