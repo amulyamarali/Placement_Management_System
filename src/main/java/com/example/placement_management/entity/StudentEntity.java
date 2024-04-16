@@ -17,9 +17,9 @@ public class StudentEntity {
     private String email;
     private double cgpa;
     private int sem;
-    private Long phone_no;
+    private String phone_no;
     private String resume_link;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(name = "student_job",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "job_id"))
@@ -93,11 +93,11 @@ public class StudentEntity {
         return resume_link;
     }
 
-    public void setPhoneNo(Long phone_no) {
+    public void setPhoneNo(String phone_no) {
         this.phone_no = phone_no;
     }
 
-    public Long getPhoneNo() {
+    public String getPhoneNo() {
         return phone_no;
     }
 
@@ -113,6 +113,7 @@ public class StudentEntity {
                 ", srn='" + srn + '\'' +
                 ", gender='" + gender + '\'' +
                 ", branch='" + branch + '\'' +
+                ", phone_no='" + phone_no + '\'' +
                 ", email='" + email + '\'' +
                 ", cgpa=" + cgpa +
                 ", sem=" + sem +

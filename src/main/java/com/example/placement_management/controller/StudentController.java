@@ -77,10 +77,10 @@ public class StudentController {
     @RequestMapping("/applyJob/{studentId}/{jobId}")
     public String showApplyJobForm(@PathVariable("jobId") Long jobId, @PathVariable int studentId, @ModelAttribute StudentEntity student, Model model) {
         JobEntity job = jobService.getById(jobId);
-        jobService.applyForJob(jobId, student);
         student.setId(studentId);
         student.setAppliedJobs(job); // Set the job
         repo.save(student);
+        jobService.applyForJob(jobId, student);
         model.addAttribute("job", job);
         model.addAttribute("student", student);
         return "student/applyJob";

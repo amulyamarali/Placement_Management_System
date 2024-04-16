@@ -1,5 +1,6 @@
 package com.example.placement_management.controller;
 
+import com.example.placement_management.entity.StudentDetails;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.StudentRepository;
 
@@ -19,10 +20,31 @@ import java.util.List;
 public class RecruiterController {
     @Autowired
     private StudentRepository repo;
+    @Autowired
+    private RecruiterRepository repo1;
 
     @RequestMapping("/recruiter_login")
-    public String login() {
+    public String showlogin() {
         return "recruiter/login_recruiter";
+    }
+
+    @PostMapping("/recruiterLogin")
+    public String login(@RequestParam("username") String username, @RequestParam("password") String password,
+                        Model model) {
+        RecruiterEntity recruiter = repo1.findByUsername(username);
+        if (recruiter == null) {
+            model.addAttribute("loginError", "Invalid username or password.");
+            return "recruiter/login_recruiter";
+        }
+        else if (password.equals(recruiter.getPassword())) {
+            int recruiterId = recruiter.getId();
+            model.addAttribute("recruiterId", recruiterId);
+            return "redirect:/recruiter/" + recruiterId;
+        }
+        else {
+            model.addAttribute("loginError", "Invalid username or password.");
+            return "/recruiter/recruiter";
+        }
     }
 
     @RequestMapping("/recruiter")

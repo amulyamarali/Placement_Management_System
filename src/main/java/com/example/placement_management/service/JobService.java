@@ -43,8 +43,11 @@ public class JobService {
     public void applyForJob(Long jobId, StudentEntity student) {
         JobEntity job = jobRepository.findById(jobId).orElse(null);
         if (job != null) {
-            job.getApplicants().add(student);
+            List<StudentEntity> applicants = job.getApplicants();
+            applicants.add(student);
+            job.setApplicants(applicants);
             jobRepository.save(job);
+            System.out.println(applicants);
         }
     }
 

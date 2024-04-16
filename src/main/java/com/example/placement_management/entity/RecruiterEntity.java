@@ -72,4 +72,5 @@ public class RecruiterEntity {
                 ", email='" + email + '\'' +
                 '}';
     }
+
 }

@@ -49,6 +49,7 @@ public class AdminController {
     @GetMapping("/applicants/{jobId}")
     public String appliedStudents(@PathVariable Long jobId, Model model) {
         List<StudentEntity> applied = jobService.getApplicantsForJob(jobId);
+        System.out.println(applied);
         model.addAttribute("applicants", applied);
         return "admin/appliedStudents";
     }
