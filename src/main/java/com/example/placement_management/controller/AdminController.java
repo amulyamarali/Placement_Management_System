@@ -4,11 +4,13 @@ import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.RecruiterEntity;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.JobRepository;
+import com.example.placement_management.service.AdminService;
 import com.example.placement_management.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.placement_management.service.AdminService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,20 +22,17 @@ public class AdminController {
 //    public JobRepository repo;
     @Autowired
     private JobService jobService;
-
     @Autowired
     private JobRepository repo;
+    @Autowired
+    private AdminService adminService;
 
     @GetMapping("/admin_login")
-    public String showlogin() {
+    public String login() {
         return "admin/login_admin";
     }
-
-
     @RequestMapping("/admin/upload")
     public String uploadJobs(Model model){
-
-
         model.addAttribute("jobEntity", new JobEntity());
         return "admin/uploadJobs";
     }
@@ -42,10 +41,50 @@ public class AdminController {
     public String displayJobs(Model model) {
         List<JobEntity> jobs = jobService.listAll("deadline"); // Sort by deadline by default
         model.addAttribute("jobs", jobs);
-        System.out.println(jobs);
         return "admin/adminJobs";
     }
 
+    @RequestMapping("/success/admin_home")
+    public String display(Model model) {
+        List<JobEntity> jobs = jobService.listAll("deadline"); // Sort by deadline by default
+        model.addAttribute("jobs", jobs);
+        return "admin/adminJobs";
+    }
+
+    @PostMapping("/login/admin_home")
+    public String adminLogin(@RequestParam("username") String username,
+                             @RequestParam("password") String password,
+                             Model model) {
+        // Check if the username and password are correct
+        if (adminService.authenticate(username, password)) {
+            // Redirect to the admin home page if authentication is successful
+            return "redirect:/success/admin_home"; // Change the redirect URL to the admin home page
+        } else {
+            // If authentication fails, display an error message to the user
+            model.addAttribute("error", "Invalid username or password. Please try again.");
+            return "redirect:/admin_login"; // Redirect back to the login page with an error message
+        }
+    }
+
+    private List<String> getSortOptions() {
+        // Define the available sort options
+        return Arrays.asList("salary","deadline");
+    }
+
+    @PostMapping("/admin/upload")
+    public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
+        repo.save(jobEntity);
+        return "redirect:/admin/upload"; // Redirect to the upload form again or any other appropriate page
+    }
+
+    @PostMapping("/success/admin_home/delete/{id}")
+    public String deleteJobs(@PathVariable("id") Long id) {
+        jobService.delete(id);
+        return "redirect:/admin_home";
+    }
+
+
+//    newly added
     @GetMapping("/applicants/{jobId}")
     public String appliedStudents(@PathVariable Long jobId, Model model) {
         List<StudentEntity> applied = jobService.getApplicantsForJob(jobId);
@@ -60,24 +99,4 @@ public class AdminController {
         model.addAttribute("filteredStudents", filtered);
         return "admin/shortlist";
     }
-
-    private List<String> getSortOptions() {
-        // Define the available sort options
-        return Arrays.asList("salary","deadline");
-    }
-
-    @PostMapping("/admin/upload")
-    public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
-        repo.save(jobEntity);
-        return "redirect:/admin_home";
-    }
-
-    @PostMapping("/admin_home/delete/{id}")
-    public String deleteJobs(@PathVariable("id") Long id) {
-        jobService.delete(id);
-        return "redirect:/admin_home";
-    }
-
-
-
 }
