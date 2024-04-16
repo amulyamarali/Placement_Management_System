@@ -44,6 +44,7 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a class="btn btn-light my-2 my-sm-0 mr-2" href="/admin/upload" role="button">Upload new Job</a>
+                    <a class="btn btn-light my-2 my-sm-0" href="#" role="button">Student List</a>
                 </li>
             </ul>
         </div>
@@ -65,30 +66,22 @@
                     <th>Recruiter Credentials</th>
                     <th>Deadline</th>
                     <th></th>
-                    <th></th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="job, iterStat : ${jobs}">
+                <tr th:each="job, iterStat : ${jobs}" th:if="${iterStat.index} != 0">
                     <td th:text="${job.company}">Company</td>
                     <td th:text="${job.job_role}">Role</td>
                     <td th:text="${#numbers.formatDecimal(job.salary, 0, 'COMMA', 2, 'POINT')}">Salary</td>
                     <td th:text="${job.description}" style="width:300px">Description</td>
-                    <td th:text="${job.job_id}">Job ID</td>
+                    <td th:text="${job.id}">Job ID</td>
                     <td th:text="${job.recruiter_id}">Recruiter ID</td>
                     <td th:text="${job.recruiter_credentials}">Recruiter Credentials</td>
                     <td th:text="${job.deadline}" style="width:120px">Deadline</td>
                     <td>
-                        <form method="post" th:action="@{/admin_home/delete/{id}(id=${job.id})}">
+                        <form method="post" th:action="@{/success/admin_home/delete/{id}(id=${job.id})}">
                             <button type="submit" class="btn btn-danger delete-btn" onclick="return confirmDelete()">Delete</button>
                         </form>
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" th:href="@{'/applicants/' + ${job.id}}">Applicants</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-primary" th:href="@{'/showShortlist/' + ${job.id}}">Shortlist</a>
                     </td>
                 </tr>
                 </tbody>

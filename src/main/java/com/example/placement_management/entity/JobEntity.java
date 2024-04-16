@@ -8,13 +8,12 @@ import java.util.List;
 @Table(name="job_details")
 public class JobEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     public String company;
     public String job_role;
     public String description;
     public long salary;
-    public int job_id;
     public String recruiter_id;
     public String deadline;
     public String recruiter_credentials;
@@ -32,9 +31,6 @@ public class JobEntity {
         this.company = company;
     }
 
-    public void setJob_id(int job_id) {
-        this.job_id = job_id;
-    }
 
     public String getCompany() {
         return company;
@@ -107,7 +103,6 @@ public class JobEntity {
                 ", job_role='" + job_role + '\'' +
                 ", description='" + description + '\'' +
                 ", salary='" + salary + '\'' +
-                ", job_id='" + job_id + '\'' +
                 ", recruiter_id='" + recruiter_id + '\'' +
                 ", recruiter_credentials='" + recruiter_credentials + '\'' +
                 ", deadline='"+deadline+'\'' +
