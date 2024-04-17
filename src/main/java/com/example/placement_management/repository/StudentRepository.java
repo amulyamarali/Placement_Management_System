@@ -8,6 +8,7 @@ public interface StudentRepository extends JpaRepository<StudentEntity,Integer> 
     List<StudentEntity> findByCgpaGreaterThanEqual(double cgpa);
     List<StudentEntity> findShortlistById(Long jobId);
 
-    StudentEntity getStudentById(Long studentId);
+//    StudentEntity getStudentById(Long studentId);
 
+    List<StudentEntity> findByJobId(Long jobId);
 }

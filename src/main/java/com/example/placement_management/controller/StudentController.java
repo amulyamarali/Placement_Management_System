@@ -78,7 +78,8 @@ public class StudentController {
     public String showApplyJobForm(@PathVariable("jobId") Long jobId, @PathVariable int studentId, @ModelAttribute StudentEntity student, Model model) {
         JobEntity job = jobService.getById(jobId);
         student.setId(studentId);
-        student.setAppliedJobs(job); // Set the job
+        student.setJobId(jobId);
+        student.setAppliedJobs(job);
         repo.save(student);
         jobService.applyForJob(jobId, student);
         model.addAttribute("job", job);
@@ -93,7 +94,7 @@ public class StudentController {
 //    }
     @GetMapping("/student/signup")
     public String showSignupForm(Model model) {
-        model.addAttribute("recruiter", new RecruiterEntity());
+//        model.addAttribute("recruiter", new RecruiterEntity());
         return "student/signup_student";
     }
 }

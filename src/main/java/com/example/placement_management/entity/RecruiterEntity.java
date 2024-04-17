@@ -6,37 +6,27 @@ import jakarta.persistence.*;
 @Table(name = "recruiter_details")
 public class RecruiterEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String id;
 
-    @Column(name="username", nullable = false, unique = true)
-    private String username;
-
-    @Column(name="password", nullable = false)
+    @Column(nullable = false)
     private String password;
-
-    @Column(name="company_name")
     private String companyName;
+    private Long jobId;
 
-    @Column(name="email")
-    private String email;
-
-    // Constructor, getters, setters
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public Long getJobId() {
+        return jobId;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setJobId(Long jobId) {
+        this.jobId = jobId;
     }
 
     public String getPassword() {
@@ -54,23 +44,22 @@ public class RecruiterEntity {
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+    public RecruiterEntity() {
 
-    public String getEmail() {
-        return email;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+//    public RecruiterEntity(Long id, String password, String companyName, Long jobId) {
+//        this.id = id;
+//        this.jobId = jobId;
+//        this.companyName = companyName;
+//        this.password = password;
+//    }
     @Override
     public String toString() {
         return "RecruiterEntity{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
                 ", companyName='" + companyName + '\'' +
-                ", email='" + email + '\'' +
+                ", jobId='" + jobId + '\'' +
                 '}';
     }
-
 }

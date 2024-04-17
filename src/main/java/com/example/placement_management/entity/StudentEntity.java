@@ -19,6 +19,7 @@ public class StudentEntity {
     private int sem;
     private String phone_no;
     private String resume_link;
+    private Long jobId;
     @ManyToMany(cascade = {CascadeType.REMOVE})
     @JoinTable(name = "student_job",
             joinColumns = @JoinColumn(name = "student_id"),
@@ -105,6 +106,7 @@ public class StudentEntity {
         this.resume_link = resume_link;
     }
 
+    public void setJobId(Long jobId) { this.jobId = jobId; }
     @Override
     public String toString() {
         return "StudentEntity{" +

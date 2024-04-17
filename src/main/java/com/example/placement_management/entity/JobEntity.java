@@ -66,7 +66,6 @@ public class JobEntity {
     public String getRecruiter_id() {
         return recruiter_id;
     }
-
     public String getRecruiter_credentials() {
         return recruiter_credentials;
     }

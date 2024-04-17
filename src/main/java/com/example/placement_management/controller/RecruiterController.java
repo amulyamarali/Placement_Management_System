@@ -1,5 +1,6 @@
 package com.example.placement_management.controller;
 
+import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentDetails;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.StudentRepository;
@@ -9,12 +10,10 @@ import com.example.placement_management.entity.RecruiterEntity;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class RecruiterController {
@@ -29,27 +28,31 @@ public class RecruiterController {
     }
 
     @PostMapping("/recruiterLogin")
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password,
+    public String login(@RequestParam("id") Long id, @RequestParam("password") String password,
                         Model model) {
-        RecruiterEntity recruiter = repo1.findByUsername(username);
-        if (recruiter == null) {
+        Optional<RecruiterEntity> optionalRecruiter = repo1.findById(id);
+        if (optionalRecruiter.isPresent()) {
+            RecruiterEntity recruiter = optionalRecruiter.get();
+            if (password.equals(recruiter.getPassword())) {
+                String recruiterId = recruiter.getId();
+                model.addAttribute("recruiterId", recruiterId);
+                return "redirect:/recruiter/" + recruiterId;
+            } else {
+                model.addAttribute("loginError", "Invalid username or password.");
+            }
+        } else {
             model.addAttribute("loginError", "Invalid username or password.");
-            return "recruiter/login_recruiter";
         }
-        else if (password.equals(recruiter.getPassword())) {
-            int recruiterId = recruiter.getId();
-            model.addAttribute("recruiterId", recruiterId);
-            return "redirect:/recruiter/" + recruiterId;
-        }
-        else {
-            model.addAttribute("loginError", "Invalid username or password.");
-            return "/recruiter/recruiter";
-        }
+        return "recruiter/login_recruiter";
     }
 
-    @RequestMapping("/recruiter")
-    public String showRecruiterPage(Model model) {
-        List<StudentEntity> allStudents = repo.findAll();
+
+    @RequestMapping("/recruiter/{recruiterId}")
+    public String showRecruiterPage(Model model, @PathVariable Long recruiterId) {
+        Optional<RecruiterEntity> recruiter= repo1.findById(recruiterId);
+        RecruiterEntity recruiter1 = recruiter.get();
+        Long jobId = recruiter1.getJobId();
+        List<StudentEntity> allStudents = repo.findByJobId(jobId);
         model.addAttribute("students", allStudents);
         return "recruiter/recruiter";
     }
@@ -58,16 +61,17 @@ public class RecruiterController {
     public String filterStudents(@RequestParam("cgpa") double cgpa, Model model) {
         List<StudentEntity> filteredStudents = repo.findByCgpaGreaterThanEqual(cgpa);
         model.addAttribute("students", filteredStudents);
+
         return "recruiter/recruiter";
     }
 
     @Autowired
     private RecruiterRepository RecruiterRepository;
 
-    @GetMapping("/recruiter/signup")
-    public String showSignupForm(Model model) {
-        model.addAttribute("recruiter", new RecruiterEntity());
-        return "recruiter/signup_recruiter";
-    }
+//    @GetMapping("/recruiter/signup")
+//    public String showSignupForm(Model model) {
+//        model.addAttribute("recruiter", new RecruiterEntity());
+//        return "recruiter/signup_recruiter";
+//    }
 
 }
