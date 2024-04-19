@@ -24,7 +24,7 @@ public class JobEntity {
     public void setId(long id) {
         this.id = id;
     }
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public void setCompany(String company) {
@@ -48,7 +48,7 @@ public class JobEntity {
         this.salary = salary;
     }
 
-    public long getSalary() {
+    public Long getSalary() {
         return salary;
     }
 

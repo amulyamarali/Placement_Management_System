@@ -28,7 +28,7 @@ public class RecruiterController {
     }
 
     @PostMapping("/recruiterLogin")
-    public String login(@RequestParam("id") Long id, @RequestParam("password") String password,
+    public String login(@RequestParam("id") String id, @RequestParam("password") String password,
                         Model model) {
         Optional<RecruiterEntity> optionalRecruiter = repo1.findById(id);
         if (optionalRecruiter.isPresent()) {
@@ -48,7 +48,7 @@ public class RecruiterController {
 
 
     @RequestMapping("/recruiter/{recruiterId}")
-    public String showRecruiterPage(Model model, @PathVariable Long recruiterId) {
+    public String showRecruiterPage(Model model, @PathVariable String recruiterId) {
         Optional<RecruiterEntity> recruiter= repo1.findById(recruiterId);
         RecruiterEntity recruiter1 = recruiter.get();
         Long jobId = recruiter1.getJobId();
@@ -64,10 +64,6 @@ public class RecruiterController {
 
         return "recruiter/recruiter";
     }
-
-    @Autowired
-    private RecruiterRepository RecruiterRepository;
-
 //    @GetMapping("/recruiter/signup")
 //    public String showSignupForm(Model model) {
 //        model.addAttribute("recruiter", new RecruiterEntity());

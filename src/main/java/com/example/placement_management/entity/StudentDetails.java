@@ -9,14 +9,14 @@ public class StudentDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "email_id")
-    private String email_id;
+    @Column(name = "email_id", unique = true)
+    private String emailId;
 
     public StudentDetails() {
     }
@@ -25,7 +25,7 @@ public class StudentDetails {
     public StudentDetails(String username, String password, String email_id) {
         this.username = username;
         this.password = password;
-        this.email_id = email_id;
+        this.emailId = email_id;
     }
 
     public int getId() {
@@ -52,11 +52,12 @@ public class StudentDetails {
         this.password = password;
     }
 
-    public String getEmail_id() {
-        return email_id;
+    public String getEmailId() {
+        return emailId;
     }
 
     public void setEmail_id(String email_id) {
-        this.email_id = email_id;
+        this.emailId = email_id;
     }
+
 }

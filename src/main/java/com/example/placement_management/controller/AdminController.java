@@ -38,25 +38,16 @@ public class AdminController {
     public String login() {
         return "admin/login_admin";
     }
-    @RequestMapping("/admin/upload")
-    public String uploadJobs(Model model){
-        model.addAttribute("jobEntity", new JobEntity());
-        return "admin/uploadJobs";
-    }
 
     @RequestMapping("/admin_home")
     public String displayJobs(Model model) {
-        List<JobEntity> jobs = jobService.listAll("deadline"); // Sort by deadline by default
+        List<JobEntity> jobs = jobService.listAll("deadline");
+        if(jobs.isEmpty()) {
+            model.addAttribute("errorMessage", "No jobs to display");
+        }
         model.addAttribute("jobs", jobs);
         return "admin/adminJobs";
     }
-
-//    @RequestMapping("/success/admin_home")
-//    public String display(Model model) {
-//        List<JobEntity> jobs = jobService.listAll("deadline"); // Sort by deadline by default
-//        model.addAttribute("jobs", jobs);
-//        return "admin/adminJobs";
-//    }
 
     @PostMapping("/login/admin_home")
     public String adminLogin(@RequestParam("username") String username,
@@ -78,7 +69,11 @@ public class AdminController {
         return Arrays.asList("salary","deadline");
     }
 
-    @PostMapping("/admin/upload")
+    @GetMapping("/admin/upload")
+        public String uploadJobs() {
+        return "/admin/uploadJobs";
+    }
+    @RequestMapping("/upload")
     public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
         repo.save(jobEntity);
         Long jobId = jobEntity.getId();
@@ -90,9 +85,8 @@ public class AdminController {
         recruiter.setJobId(jobId);
         recruiter.setPassword(password);
         recruiter.setCompanyName(company);
-//        RecruiterEntity recruiter = new RecruiterEntity(recId, password, company, jobId);
         recRepo.save(recruiter);
-        return "redirect:/admin/upload"; // Redirect to the upload form again or any other appropriate page
+        return "redirect:/admin_home"; // Redirect to the upload form again or any other appropriate page
     }
 
     @PostMapping("/success/admin_home/delete/{id}")

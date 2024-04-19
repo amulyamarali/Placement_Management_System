@@ -36,7 +36,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title text-center">Job Details</h3>
-                    <form th:action="@{/admin_home}" th:object="${job}" method="post"> <!-- Removed Thymeleaf attributes as they're not applicable here --><!-- Removed Thymeleaf attributes as they're not applicable here -->
+                    <form th:action="@{'/upload'}" th:object="${job}" method="post"> <!-- Removed Thymeleaf attributes as they're not applicable here --><!-- Removed Thymeleaf attributes as they're not applicable here -->
                         <div class="form-group">
                             <label for="company">Company</label>
                             <input type="text" class="form-control" id="company" name="company" required>
