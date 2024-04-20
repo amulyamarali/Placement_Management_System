@@ -9,7 +9,7 @@ import java.util.List;
 public class JobEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long jobId;
     public String company;
     public String job_role;
     public String description;
@@ -18,14 +18,14 @@ public class JobEntity {
     public String deadline;
     public String recruiter_credentials;
 
-    @ManyToMany(mappedBy = "appliedJobs", cascade = CascadeType.ALL)
-    private List<StudentEntity> applicants;
+    @ManyToMany
+    public List<StudentEntity> applicants;
 
     public void setId(long id) {
-        this.id = id;
+        this.jobId = id;
     }
     public Long getId() {
-        return id;
+        return jobId;
     }
     public void setCompany(String company) {
         this.company = company;
@@ -85,7 +85,7 @@ public class JobEntity {
     public JobEntity() {
     }
     public JobEntity(Long id, String company, String job_role, Long salary, String description,String recruiter_id,String recruiter_credentials,String deadline) {
-        this.id = id;
+        this.jobId = id;
         this.salary = salary;
         this.company = company;
         this.job_role = job_role;
@@ -97,7 +97,7 @@ public class JobEntity {
     @Override
     public String toString() {
         return "JobEntity{" +
-                "id=" + id +
+                "id=" + jobId +
                 ", company='" + company + '\'' +
                 ", job_role='" + job_role + '\'' +
                 ", description='" + description + '\'' +

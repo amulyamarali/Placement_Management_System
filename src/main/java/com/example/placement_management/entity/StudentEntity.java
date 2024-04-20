@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "students")
+@Table(name="students")
 public class StudentEntity {
+
     @Id
     private int id;
+    private Long jobId;
     private String name;
     private String srn;
     private String gender;
@@ -19,12 +21,9 @@ public class StudentEntity {
     private int sem;
     private String phone_no;
     private String resume_link;
-    private Long jobId;
-    @ManyToMany(cascade = {CascadeType.REMOVE})
-    @JoinTable(name = "student_job",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "job_id"))
-    private List<JobEntity> appliedJobs;
+
+    @ManyToMany(mappedBy = "applicants")
+    public List<JobEntity> appliedJobs;
 
     public int getId() {
         return id;
@@ -105,8 +104,7 @@ public class StudentEntity {
     public void setResume_link(String resume_link) {
         this.resume_link = resume_link;
     }
-
-    public void setJobId(Long jobId) { this.jobId = jobId; }
+    public void setJobId(Long jobId) {this.jobId = jobId;}
     @Override
     public String toString() {
         return "StudentEntity{" +
@@ -129,9 +127,8 @@ public class StudentEntity {
             appliedJobs.add(appliedJob);
         }
         else {
-            this.appliedJobs.add(appliedJob);
+            this.getAppliedJobs().add(appliedJob);
         }
-
     }
     public List<JobEntity> getAppliedJobs() {
         return appliedJobs;
