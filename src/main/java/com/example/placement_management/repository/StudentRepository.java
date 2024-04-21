@@ -10,7 +10,7 @@ public interface StudentRepository extends JpaRepository<StudentEntity,Integer> 
 
 //    StudentEntity getStudentById(Long studentId);
 
-    List<StudentEntity> findByJobId(Long jobId);
+//    List<StudentEntity> findByJobId(Long jobId);
 
     boolean existsByEmail(String email);
 }

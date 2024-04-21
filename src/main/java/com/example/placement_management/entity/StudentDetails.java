@@ -2,6 +2,9 @@ package com.example.placement_management.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "student_signup")
 public class StudentDetails {
@@ -21,6 +24,13 @@ public class StudentDetails {
     public StudentDetails() {
     }
 
+    @ManyToMany(cascade = {CascadeType.MERGE})
+    @JoinTable(
+            name = "student_job",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_id")
+    )
+    private List<JobEntity> appliedJobs;
 
     public StudentDetails(String username, String password, String email_id) {
         this.username = username;
@@ -60,4 +70,10 @@ public class StudentDetails {
         this.emailId = email_id;
     }
 
+    public void setAppliedJobs(JobEntity appliedJob, StudentDetails student) {
+            student.getAppliedJobs().add(appliedJob);
+    }
+    public List<JobEntity> getAppliedJobs() {
+        return this.appliedJobs;
+    }
 }

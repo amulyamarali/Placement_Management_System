@@ -51,10 +51,6 @@ public class StudentController {
             int studentId = student.getId();
             return "redirect:/student_jobs/"+studentId;
         }
-//        repository.save(student);
-//        int studentId = student.getId();
-//        return "redirect:/student_jobs/"+studentId;
-//        return "redirect:/student_jobs/"+studentId;
     }
 
     @GetMapping("/student_login")
@@ -84,18 +80,15 @@ public class StudentController {
 
     @RequestMapping("/student_jobs/{studentId}")
     public String displayJobLists(Model model, @PathVariable int studentId) {
-        Optional<StudentEntity> optionalStudentEntity = repo.findById(studentId);
+        StudentDetails StudentEntity = repository.getById(studentId);
 
         List<JobEntity> notAppliedJobs = new ArrayList<>();
         List<JobEntity> listJobs = jobService.listAll();
 
 //      if student details already exists (logging in)
-        if (optionalStudentEntity.isPresent()){
-            StudentEntity student = optionalStudentEntity.get();
+        if (StudentEntity.getId() > 0){
+            List<JobEntity> appliedJobs = StudentEntity.getAppliedJobs();
 
-            List<JobEntity> appliedJobs = student.getAppliedJobs();
-
-            System.out.println("applied "+appliedJobs);
             // Iterate through all available jobs
             for (JobEntity job : listJobs) {
                 // Check if the job is not already applied for
@@ -129,7 +122,28 @@ public class StudentController {
         JobEntity job = jobService.getById(jobId);
         System.out.println(student);
         student.setId(studentId);
-        student.setJobId(jobId);
+        StudentDetails student1 = repository.getById(studentId);
+        student1.setAppliedJobs(job, student1);
+        repository.save(student1);
+        repo.save(student);
+        System.out.println(student1.getAppliedJobs());
+        model.addAttribute("student", student);
+        return "redirect:/student_jobs/"+studentId;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//        student.setJobId(jobId);
 //        boolean alreadyApplied = false;
 //        if (student.getAppliedJobs() != null) {
 //            System.out.println(student.getAppliedJobs());
@@ -149,10 +163,3 @@ public class StudentController {
 //             model.addAttribute("errorMessage", "You have already applied for this job.");
 //             return "redirect:/student_jobs" + studentId;
 //        }
-        model.addAttribute("student", student);
-        student.setAppliedJobs(job);
-        repo.save(student);
-        System.out.println(student);
-        return "redirect:/student_jobs/"+studentId;
-    }
-}

@@ -3,6 +3,7 @@ package com.example.placement_management.controller;
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentDetails;
 import com.example.placement_management.entity.StudentEntity;
+import com.example.placement_management.repository.JobRepository;
 import com.example.placement_management.repository.StudentRepository;
 
 import com.example.placement_management.repository.RecruiterRepository;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,8 @@ public class RecruiterController {
     private StudentRepository repo;
     @Autowired
     private RecruiterRepository repo1;
+    @Autowired
+    private JobRepository jobRepository;
 
     @RequestMapping("/recruiter_login")
     public String showlogin() {
@@ -52,8 +57,16 @@ public class RecruiterController {
         Optional<RecruiterEntity> recruiter= repo1.findById(recruiterId);
         RecruiterEntity recruiter1 = recruiter.get();
         Long jobId = recruiter1.getJobId();
-        List<StudentEntity> allStudents = repo.findByJobId(jobId);
-        model.addAttribute("students", allStudents);
+        JobEntity job = jobRepository.getById(jobId);
+        List<StudentEntity> applicants = new ArrayList<>();
+        List<StudentDetails> applied = job.getApplicants();
+        for(StudentDetails student : applied) {
+            int studentId = student.getId();
+            StudentEntity student1 = repo.getById(studentId);
+            applicants.add(student1);
+        }
+//        List<StudentEntity> allStudents = repo.findByJobId(jobId);
+        model.addAttribute("students", applicants);
         return "recruiter/recruiter";
     }
 

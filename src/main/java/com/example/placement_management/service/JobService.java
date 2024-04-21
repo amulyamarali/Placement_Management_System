@@ -1,4 +1,6 @@
 package com.example.placement_management.service;
+import com.example.placement_management.entity.StudentDetails;
+import com.example.placement_management.repository.StudentDetailsRepository;
 import org.springframework.data.domain.Sort;
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.StudentEntity;
@@ -18,6 +20,8 @@ public class JobService {
     private JobRepository jobRepository;
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private StudentDetailsRepository repository;
 
     public List<JobEntity>  listAll() {
         return jobRepository.findAll();
@@ -43,8 +47,9 @@ public class JobService {
     public void applyForJob(Long jobId, StudentEntity student) {
         JobEntity job = jobRepository.findById(jobId).orElse(null);
         if (job != null) {
-            List<StudentEntity> applicants = job.getApplicants();
-            applicants.add(student);
+            List<StudentDetails> applicants = job.getApplicants();
+            StudentDetails student1 = repository.getById(student.getId());
+            applicants.add(student1);
             job.setApplicants(applicants);
             jobRepository.save(job);
             System.out.println(applicants);
@@ -55,14 +60,15 @@ public class JobService {
         Optional<JobEntity> optionalJob = jobRepository.findById(jobId);
         if (optionalJob.isPresent()) {
             JobEntity job = optionalJob.get();
-            List<StudentEntity> applicants = job.getApplicants();
-            applicants.add(student); // Here, JPA will manage the association
+            List<StudentDetails> applicants = job.getApplicants();
+            StudentDetails student1 = repository.getById(student.getId());
+            applicants.add(student1); // Here, JPA will manage the association
             jobRepository.save(job);
         } else {
             return;
         }
     }
-    public List<StudentEntity> getApplicantsForJob(Long jobId) {
+    public List<StudentDetails> getApplicantsForJob(Long jobId) {
         Optional<JobEntity> optionalJob = jobRepository.findById(jobId);
         if (optionalJob.isPresent()) {
             JobEntity job = optionalJob.get();

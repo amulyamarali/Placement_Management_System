@@ -2,6 +2,7 @@ package com.example.placement_management.controller;
 
 import com.example.placement_management.entity.JobEntity;
 import com.example.placement_management.entity.RecruiterEntity;
+import com.example.placement_management.entity.StudentDetails;
 import com.example.placement_management.entity.StudentEntity;
 import com.example.placement_management.repository.JobRepository;
 import com.example.placement_management.repository.RecruiterRepository;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.example.placement_management.service.AdminService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -99,9 +101,19 @@ public class AdminController {
 //    newly added
     @GetMapping("/applicants/{jobId}")
     public String appliedStudents(@PathVariable Long jobId, Model model) {
-        List<StudentEntity> applied = stRepo.findByJobId(jobId);
-        System.out.println(applied);
-        model.addAttribute("applicants", applied);
+//        List<StudentEntity> applied = stRepo.findByJobId(jobId);
+        JobEntity job = repo.getById(jobId);
+        System.out.println("job" + job);
+        List<StudentEntity> applicants = new ArrayList<>();
+        List<StudentDetails> applied = job.getApplicants();
+        System.out.println("applicants"+applied);
+        for(StudentDetails student : applied) {
+            int studentId = student.getId();
+            StudentEntity student1 = stRepo.getById(studentId);
+            applicants.add(student1);
+        }
+        System.out.println("applicants"+applicants);
+        model.addAttribute("applicants", applicants);
         return "admin/appliedStudents";
     }
 

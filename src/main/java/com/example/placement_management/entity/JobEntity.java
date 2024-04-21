@@ -18,8 +18,8 @@ public class JobEntity {
     public String deadline;
     public String recruiter_credentials;
 
-    @ManyToMany
-    public List<StudentEntity> applicants;
+    @ManyToMany(mappedBy = "appliedJobs")
+    private List<StudentDetails> applicants;
 
     public void setId(long id) {
         this.jobId = id;
@@ -108,11 +108,11 @@ public class JobEntity {
                 '}';
     }
 
-    public List<StudentEntity> getApplicants() {
+    public List<StudentDetails> getApplicants() {
         return this.applicants;
     }
 
-    public void setApplicants(List<StudentEntity> applicants) {
+    public void setApplicants(List<StudentDetails> applicants) {
         this.applicants = applicants;
     }
 }

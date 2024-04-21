@@ -11,7 +11,7 @@ public class StudentEntity {
 
     @Id
     private int id;
-    private Long jobId;
+//    private Long jobId;
     private String name;
     private String srn;
     private String gender;
@@ -22,8 +22,6 @@ public class StudentEntity {
     private String phone_no;
     private String resume_link;
 
-    @ManyToMany(mappedBy = "applicants")
-    public List<JobEntity> appliedJobs;
 
     public int getId() {
         return id;
@@ -104,7 +102,7 @@ public class StudentEntity {
     public void setResume_link(String resume_link) {
         this.resume_link = resume_link;
     }
-    public void setJobId(Long jobId) {this.jobId = jobId;}
+//    public void setJobId(Long jobId) {this.jobId = jobId;}
     @Override
     public String toString() {
         return "StudentEntity{" +
@@ -121,16 +119,5 @@ public class StudentEntity {
                 '}';
     }
 
-    public void setAppliedJobs(JobEntity appliedJob) {
-        if(this.appliedJobs == null) {
-            appliedJobs = new ArrayList<>();
-            appliedJobs.add(appliedJob);
-        }
-        else {
-            this.getAppliedJobs().add(appliedJob);
-        }
-    }
-    public List<JobEntity> getAppliedJobs() {
-        return appliedJobs;
-    }
+
 }
