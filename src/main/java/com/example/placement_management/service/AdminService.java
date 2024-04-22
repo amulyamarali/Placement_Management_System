@@ -3,8 +3,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AdminService {
-
-    // Hardcoded admin credentials (replace with database or external authentication provider)
     private static final String ADMIN_USERNAME = "pesu_admin";
     private static final String ADMIN_PASSWORD = "pesu52";
 

@@ -22,8 +22,6 @@ import java.util.List;
 @Controller
 public class AdminController {
 
-//    @Autowired
-//    public JobRepository repo;
     @Autowired
     private JobService jobService;
     @Autowired

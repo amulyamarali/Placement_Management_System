@@ -31,7 +31,6 @@ public class JobEntity {
         this.company = company;
     }
 
-
     public String getCompany() {
         return company;
     }

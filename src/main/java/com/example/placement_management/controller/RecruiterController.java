@@ -67,12 +67,17 @@ public class RecruiterController {
         }
 //        List<StudentEntity> allStudents = repo.findByJobId(jobId);
         model.addAttribute("students", applicants);
+        model.addAttribute("recruiterId", recruiterId);
         return "recruiter/recruiter";
     }
 
-    @PostMapping("/recruiter/filter")
-    public String filterStudents(@RequestParam("cgpa") double cgpa, Model model) {
+    @PostMapping("/recruiter/filter/{recruiterId}")
+    public String filterStudents(@RequestParam("cgpa") double cgpa, Model model, @PathVariable String recruiterId) {
         List<StudentEntity> filteredStudents = repo.findByCgpaGreaterThanEqual(cgpa);
+        RecruiterEntity recruiter = repo1.getById(recruiterId);
+        Long jobId = recruiter.getJobId();
+        JobEntity job = jobRepository.getById(jobId);
+
         model.addAttribute("students", filteredStudents);
 
         return "recruiter/recruiter";
