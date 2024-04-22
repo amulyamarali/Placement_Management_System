@@ -18,6 +18,42 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// Base interface
+interface Job {
+    String getTier();
+}
+
+// Base decorator class
+abstract class JobDecorator implements Job {
+    protected JobEntity decoratedJob;
+
+    public JobDecorator(JobEntity decoratedJob) {
+        this.decoratedJob = decoratedJob;
+    }
+
+    public String getTier() {
+        return decoratedJob.getTier();
+    }
+}
+
+// Concrete decorator class
+class TierDecorator extends JobDecorator {
+    public TierDecorator(JobEntity decoratedJob) {
+        super(decoratedJob);
+    }
+
+    @Override
+    public String getTier() {
+        if (decoratedJob.getSalary() > 50000) {
+            return "tier1";
+        } else {
+            return "tier2";
+        }
+    }
+}
+
+
+
 @Controller
 public class AdminController {
 
@@ -72,8 +108,16 @@ public class AdminController {
         public String uploadJobs() {
         return "/admin/uploadJobs";
     }
+
+    
     @RequestMapping("/upload")
     public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
+        // Create a new TierDecorator object that decorates the jobEntity object
+        Job decoratedJob = new TierDecorator(jobEntity);
+        // Call the getTier method of the TierDecorator object to get the tier of the job
+        // and set it in the jobEntity object
+        jobEntity.setTier(decoratedJob.getTier());
+    
         repo.save(jobEntity);
         Long jobId = jobEntity.getId();
         String password = jobEntity.getRecruiter_credentials();

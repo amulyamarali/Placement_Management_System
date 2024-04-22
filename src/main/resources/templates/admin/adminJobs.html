@@ -64,6 +64,8 @@
                     <th>Recruiter ID</th>
                     <th>Recruiter Credentials</th>
                     <th>Deadline</th>
+                    <th>Tier</th>
+                    
                     <th></th>
                     <th></th>
                     <th></th>
@@ -79,6 +81,7 @@
                     <td th:text="${job.recruiter_id}">Recruiter ID</td>
                     <td th:text="${job.recruiter_credentials}">Recruiter Credentials</td>
                     <td th:text="${job.deadline}" style="width:120px">Deadline</td>
+                    <td th:text="${job.tier}">Tier</td>
                     <td>
                         <form method="post" th:action="@{/success/admin_home/delete/{id}(id=${job.id})}">
                             <button type="submit" class="btn btn-danger delete-btn" onclick="return confirmDelete()">Delete</button>
