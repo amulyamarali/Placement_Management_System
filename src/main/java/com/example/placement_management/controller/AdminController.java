@@ -72,6 +72,8 @@ public class AdminController {
         public String uploadJobs() {
         return "/admin/uploadJobs";
     }
+
+
     @RequestMapping("/upload")
     public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
         repo.save(jobEntity);
@@ -109,6 +111,9 @@ public class AdminController {
             StudentEntity student1 = stRepo.getById(studentId);
             applicants.add(student1);
         }
+        if (applicants.isEmpty()) {
+            model.addAttribute("errorMessage", "No applicants yet");
+        }
         System.out.println("applicants"+applicants);
         model.addAttribute("applicants", applicants);
         return "admin/appliedStudents";
@@ -119,6 +124,9 @@ public class AdminController {
     @GetMapping("showShortlist/{jobId}")
     public String shortList(@PathVariable("jobId") Long JobId, Model model) {
         List<StudentEntity> filtered = notificationService.findShortlistedStudentsByJobId(JobId);
+        if(filtered.isEmpty()) {
+            model.addAttribute("errorMessage", "Not shortlisted yet");
+        }
         model.addAttribute("filteredStudents", filtered);
         return "admin/shortlist";
     }

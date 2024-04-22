@@ -6,11 +6,30 @@
     <title>Applicants</title>
     <!-- Include any necessary CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Optional custom styles */
+        body {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #dddddd;
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
+<br>
+<div class="container" th:if="${errorMessage == null}">
     <br/> <h2>Applied Students:</h2> <br/>
-    <table id="example" class="table table-bordered" style="width: 100%">
+    <table id="example" class="table table-bordered" style="width: 100%" >
         <thead class="table-dark">
         <tr>
             <th>ID</th>
@@ -40,6 +59,11 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div class="container text-center">
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
 </div>
 <!-- Include any necessary JavaScript -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

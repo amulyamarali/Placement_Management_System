@@ -62,7 +62,9 @@ public class RecruiterController {
             StudentEntity student1 = repo.getById(studentId);
             applicants.add(student1);
         }
-//        List<StudentEntity> allStudents = repo.findByJobId(jobId);
+        if (applicants.isEmpty()) {
+            model.addAttribute("errorMessage", "No applicants yet");
+        }
         model.addAttribute("students", applicants);
         model.addAttribute("recruiterId", recruiterId);
         return "recruiter/recruiter";

@@ -5,9 +5,28 @@
     <title>Shortlist</title>
     <!-- Include any necessary CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Optional custom styles */
+        body {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #dddddd;
+            text-align: left;
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
+<br><br>
+<div class="container" th:if="${errorMessage == null}">
     <br/> <h2>Shortlisted Students: </h2> <br/>
     <table id="example" class="table table-bordered" style="width: 100%">
         <thead class="table-dark">
@@ -25,7 +44,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="student : ${filteredStudents}">
+        <tr th:each="student : ${filteredStudents}" >
             <td th:text="${student.id}"></td>
             <td th:text="${student.name}"></td>
             <td th:text="${student.srn}"></td>
@@ -39,6 +58,11 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div class="container text-center">
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
 </div>
 </body>
 </html>

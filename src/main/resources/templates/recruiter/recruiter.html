@@ -29,7 +29,7 @@
 <h1 class="mb-4">Recruiter Dashboard</h1>
 
 <!-- CGPA Filter Form -->
-<form th:action="@{'/recruiter/filter/' + ${recruiterId} }"  method="post" class="mb-4">
+<form th:action="@{'/recruiter/filter/' + ${recruiterId} }"  method="post" class="mb-4" th:if="${errorMessage == null}" th:target="_blank">
     <div class="input-group">
         <label for="cgpa" class="input-group-text">Filter by CGPA (>=)</label>
         <input type="text" id="cgpa" name="cgpa" class="form-control" required>
@@ -38,7 +38,7 @@
 </form>
 
 <!-- Student Details Table -->
-<div class="table-responsive">
+<div class="table-responsive" th:if="${errorMessage == null}">
     <table class="table table-striped">
         <thead class="table-dark">
         <tr>
@@ -69,6 +69,11 @@
         </tr>
         </tbody>
     </table>
+</div>
+<div class="container text-center">
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
 </div>
 
 <!-- Bootstrap JS (optional if you have functionality requiring it) -->
