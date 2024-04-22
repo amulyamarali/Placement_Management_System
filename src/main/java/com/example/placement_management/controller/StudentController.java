@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -43,12 +44,11 @@ public class StudentController {
             model.addAttribute("errorMessage", "Account already exists. Please login");
             int id = student.getId();
             System.out.println(id);
-            return "redirect:/student/signup";
+            return "redirect:/student_jobs/"+id;
         } else {
-            // Student does not exist, proceed with signup
+            // Student does not exist
             repository.save(student);
             int studentId = student.getId();
-
             return "redirect:/student_jobs/"+studentId;
         }
     }
@@ -80,23 +80,25 @@ public class StudentController {
 
     @RequestMapping("/student_jobs/{studentId}")
     public String displayJobLists(Model model, @PathVariable int studentId) {
+        System.out.println(studentId);
         StudentDetails StudentEntity = repository.getById(studentId);
-
+//
         List<JobEntity> notAppliedJobs = new ArrayList<>();
         List<JobEntity> listJobs = jobService.listAll();
 //      if student details already exists (logging in)
         if (StudentEntity.getId() > 0){
             List<JobEntity> appliedJobs = StudentEntity.getAppliedJobs();
-            StudentEntity student = repo.getById(studentId);
-
+            Optional<StudentEntity> student = repo.findById(studentId);
+            if (student.isPresent()) {
 //          check if student has been shortlisted or not
-            List<Notification> notification = student.getNotifications();
-            String not_str = " ";
-            for (Notification not: notification) {
-                not_str = not.getMessage();
+                StudentEntity student1 = student.get();
+                List<Notification> notification = student1.getNotifications();
+                String not_str = " ";
+                for (Notification not : notification) {
+                    not_str = not.getMessage();
+                }
+                model.addAttribute("notification", not_str);
             }
-            model.addAttribute("notification", not_str);
-
             // Iterate through all available jobs
             for (JobEntity job : listJobs) {
                 // Check if the job is not already applied for
@@ -105,11 +107,9 @@ public class StudentController {
                 }
             }
             if(notAppliedJobs.isEmpty()) {
-                System.out.println(notification);
                 model.addAttribute("errorMessage", "No jobs to apply");
             }
             else {
-                System.out.println(notification);
                 model.addAttribute("listJobs", notAppliedJobs);
             }
         }
