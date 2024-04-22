@@ -18,6 +18,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+// Base interface
+interface Job {
+    String getTier();
+}
+
+// Base decorator class
+abstract class JobDecorator implements Job {
+    protected JobEntity decoratedJob;
+
+    public JobDecorator(JobEntity decoratedJob) {
+        this.decoratedJob = decoratedJob;
+    }
+
+    public String getTier() {
+        return decoratedJob.getTier();
+    }
+}
+
+// Concrete decorator class
+class TierDecorator extends JobDecorator {
+    public TierDecorator(JobEntity decoratedJob) {
+        super(decoratedJob);
+    }
+
+    @Override
+    public String getTier() {
+        if (decoratedJob.getSalary() > 50000) {
+            return "tier1";
+        } else {
+            return "tier2";
+        }
+    }
+}
+
+
 @Controller
 public class AdminController {
 
@@ -69,13 +104,19 @@ public class AdminController {
     }
 
     @GetMapping("/admin/upload")
-        public String uploadJobs() {
+    public String uploadJobs() {
         return "/admin/uploadJobs";
     }
 
 
     @RequestMapping("/upload")
     public String uploadJobsSubmit(@ModelAttribute JobEntity jobEntity) {
+        // Create a new TierDecorator object that decorates the jobEntity object
+        Job decoratedJob = new TierDecorator(jobEntity);
+        // Call the getTier method of the TierDecorator object to get the tier of the job
+        // and set it in the jobEntity object
+        jobEntity.setTier(decoratedJob.getTier());
+
         repo.save(jobEntity);
         Long jobId = jobEntity.getId();
         String password = jobEntity.getRecruiter_credentials();
@@ -97,7 +138,7 @@ public class AdminController {
     }
 
 
-//    newly added
+    //    newly added
     @GetMapping("/applicants/{jobId}")
     public String appliedStudents(@PathVariable Long jobId, Model model) {
 //        List<StudentEntity> applied = stRepo.findByJobId(jobId);
@@ -111,9 +152,6 @@ public class AdminController {
             StudentEntity student1 = stRepo.getById(studentId);
             applicants.add(student1);
         }
-        if (applicants.isEmpty()) {
-            model.addAttribute("errorMessage", "No applicants yet");
-        }
         System.out.println("applicants"+applicants);
         model.addAttribute("applicants", applicants);
         return "admin/appliedStudents";
@@ -124,9 +162,6 @@ public class AdminController {
     @GetMapping("showShortlist/{jobId}")
     public String shortList(@PathVariable("jobId") Long JobId, Model model) {
         List<StudentEntity> filtered = notificationService.findShortlistedStudentsByJobId(JobId);
-        if(filtered.isEmpty()) {
-            model.addAttribute("errorMessage", "Not shortlisted yet");
-        }
         model.addAttribute("filteredStudents", filtered);
         return "admin/shortlist";
     }

@@ -17,6 +17,15 @@ public class JobEntity {
     public String recruiter_id;
     public String deadline;
     public String recruiter_credentials;
+    private String tier;
+
+    public String getTier() {
+        return tier;
+    }
+
+    public void setTier(String tier) {
+        this.tier = tier;
+    }
 
     @ManyToMany(mappedBy = "appliedJobs")
     private List<StudentDetails> applicants;
