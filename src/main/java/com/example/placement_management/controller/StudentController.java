@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -49,6 +48,7 @@ public class StudentController {
             // Student does not exist, proceed with signup
             repository.save(student);
             int studentId = student.getId();
+
             return "redirect:/student_jobs/"+studentId;
         }
     }
@@ -84,10 +84,18 @@ public class StudentController {
 
         List<JobEntity> notAppliedJobs = new ArrayList<>();
         List<JobEntity> listJobs = jobService.listAll();
-
 //      if student details already exists (logging in)
         if (StudentEntity.getId() > 0){
             List<JobEntity> appliedJobs = StudentEntity.getAppliedJobs();
+            StudentEntity student = repo.getById(studentId);
+
+//          check if student has been shortlisted or not
+            List<Notification> notification = student.getNotifications();
+            String not_str = " ";
+            for (Notification not: notification) {
+                not_str = not.getMessage();
+            }
+            model.addAttribute("notification", not_str);
 
             // Iterate through all available jobs
             for (JobEntity job : listJobs) {
@@ -97,9 +105,11 @@ public class StudentController {
                 }
             }
             if(notAppliedJobs.isEmpty()) {
+                System.out.println(notification);
                 model.addAttribute("errorMessage", "No jobs to apply");
             }
             else {
+                System.out.println(notification);
                 model.addAttribute("listJobs", notAppliedJobs);
             }
         }

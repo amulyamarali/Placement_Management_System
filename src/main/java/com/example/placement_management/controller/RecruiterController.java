@@ -1,13 +1,10 @@
 package com.example.placement_management.controller;
 
-import com.example.placement_management.entity.JobEntity;
-import com.example.placement_management.entity.StudentDetails;
-import com.example.placement_management.entity.StudentEntity;
+import com.example.placement_management.entity.*;
 import com.example.placement_management.repository.JobRepository;
 import com.example.placement_management.repository.StudentRepository;
 
 import com.example.placement_management.repository.RecruiterRepository;
-import com.example.placement_management.entity.RecruiterEntity;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -76,11 +73,24 @@ public class RecruiterController {
         List<StudentEntity> filteredStudents = repo.findByCgpaGreaterThanEqual(cgpa);
         RecruiterEntity recruiter = repo1.getById(recruiterId);
         Long jobId = recruiter.getJobId();
-        JobEntity job = jobRepository.getById(jobId);
-
+        for(StudentEntity student: filteredStudents) {
+            shortlistSubject.attach(student);
+            shortlistSubject.shortlistStudent(student, jobId);
+        }
         model.addAttribute("students", filteredStudents);
-
         return "recruiter/recruiter";
+    }
+
+    @Autowired
+    private Shortlist shortlistSubject;
+    @PostMapping("/shortlist")
+    public String shortlistStudent(@RequestParam("studentId") int studentId, @RequestParam("jobId") Long jobId) {
+        // Retrieve student details and job details based on IDs
+        StudentEntity student = repo.getById(studentId);
+        // Shortlist the student for the job
+        shortlistSubject.attach(student);
+        shortlistSubject.shortlistStudent(student, jobId);
+        return "redirect:/student";
     }
 //    @GetMapping("/recruiter/signup")
 //    public String showSignupForm(Model model) {

@@ -1,14 +1,13 @@
 package com.example.placement_management.controller;
 
-import com.example.placement_management.entity.JobEntity;
-import com.example.placement_management.entity.RecruiterEntity;
-import com.example.placement_management.entity.StudentDetails;
-import com.example.placement_management.entity.StudentEntity;
+import com.example.placement_management.entity.*;
 import com.example.placement_management.repository.JobRepository;
+import com.example.placement_management.repository.NotificationRepository;
 import com.example.placement_management.repository.RecruiterRepository;
 import com.example.placement_management.repository.StudentRepository;
 import com.example.placement_management.service.AdminService;
 import com.example.placement_management.service.JobService;
+import com.example.placement_management.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -115,9 +114,11 @@ public class AdminController {
         return "admin/appliedStudents";
     }
 
+    @Autowired
+    private NotificationService notificationService;
     @GetMapping("showShortlist/{jobId}")
     public String shortList(@PathVariable("jobId") Long JobId, Model model) {
-        List<StudentEntity> filtered = jobService.getShortlistForJob(JobId);
+        List<StudentEntity> filtered = notificationService.findShortlistedStudentsByJobId(JobId);
         model.addAttribute("filteredStudents", filtered);
         return "admin/shortlist";
     }

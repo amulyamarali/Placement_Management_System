@@ -1,5 +1,6 @@
 package com.example.placement_management.entity;
 
+import com.example.placement_management.service.StudentService;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name="students")
-public class StudentEntity {
+public class StudentEntity implements ShortlistObserver{
 
     @Id
     private int id;
@@ -119,5 +120,20 @@ public class StudentEntity {
                 '}';
     }
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Notification> notifications = new ArrayList<>();
+    @Override
+    public void notifyShortlisted(StudentEntity student, Long jobId) {
+        if (this.equals(student)) {
+            Notification notification = new Notification();
+            notification.setStudent(this); // Assuming "this" is the current student
+            notification.setMessage("You have been shortlisted for job with ID " + jobId);
+            this.notifications.add(notification);
+        }
+    }
+
+    public List<Notification> getNotifications() {
+        return this.notifications;
+    }
 
 }

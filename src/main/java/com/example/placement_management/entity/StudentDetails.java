@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "student_signup")
-public class StudentDetails {
+public class StudentDetails  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -76,4 +76,5 @@ public class StudentDetails {
     public List<JobEntity> getAppliedJobs() {
         return this.appliedJobs;
     }
+
 }

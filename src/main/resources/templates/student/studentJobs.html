@@ -83,6 +83,11 @@
                     <span th:text="${errorMessage}"></span>
                 </div>
             </div>
+            <div class="container text-center"> <!-- Added 'text-center' class here -->
+                <div th:if="${notification}" class="alert alert-success">
+                    <span th:text="${notification}"></span>
+                </div>
+            </div>
         </div>
     </div>
 </div>
